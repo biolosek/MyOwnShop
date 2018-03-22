@@ -4,15 +4,24 @@ angular.module('myShop')
   $rootScope.authenticated = $cookieStore.get('authenticated');
   $rootScope.user = $cookieStore.get('user');
 })
-.controller('appController', function($scope, $cookieStore, $window){
-  $scope.countries = {1 : {name: 'Poland', id: 1}, 2 : {name: 'Holland', id: 2}};
+.controller('appController', function($scope, $cookieStore, $window, $rootScope, $http){
+  $scope.getCountries = function() {
+  $http({
+    method: "get",
+    url: './php/getCountries.php',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }).then(function successCallback(response) {
+          $rootScope.countries = response.data;
+        })};
   $scope.logout = function(){
   $cookieStore.remove('authenticated');
   $cookieStore.remove('user');
   $window.location.reload();
   }
+  $scope.getCountries();
 })
 .controller('registerController', function($scope, $http, $cookieStore) {
+  $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
   $scope.registerData = {firstname : null, lastname : null, login: null, password : null, email : null, city : null, postalcode : null, adress: null, country: null};
 
   $scope.registerFunction = function() {
@@ -42,9 +51,6 @@ angular.module('myShop')
             return;
           }
           if ($scope.registerResponse === 'Success') {
-            $(function () {
-              $('#registerModal').modal('toggle');
-            });
             swal ( "Yeah!",  "Your account has been registered!",  "success" )
             return;
           }
