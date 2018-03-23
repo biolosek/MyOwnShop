@@ -22,73 +22,61 @@ angular.module('myShop')
 })
 .controller('registerController', function($scope, $http, $cookieStore) {
   $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+  $scope.registerData = {firstname : null, lastname : null, username: null, password : null, email : null, city : null, postalcode : null, adress: null, country: null};
 
-    this.registerForm = function() {
-      var encodedRegister =
-          'firstname=' +
-          encodeURIComponent(this.inputData.firstname) +
-          '&lastname=' +
-          encodeURIComponent(this.inputData.lastname) +
-          '&login=' +
-          encodeURIComponent(this.inputData.login) +
-          '&password=' +
-          encodeURIComponent(this.inputData.password) +
-          '&email=' +
-          encodeURIComponent(this.inputData.email) +
-          '&city=' +
-          encodeURIComponent(this.inputData.city) +
-          '&postalcode=' +
-          encodeURIComponent(this.inputData.postalcode) +
-          '&adress=' +
-          encodeURIComponent(this.inputData.adress) +
-          '&country=' +
-          encodeURIComponent(this.inputData.country);
-
-          $http({
-            method: "post",
-            url: './php/registration.php',
-            data: encodedRegister,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-            })
-            .then(function successCallback(response) {
-                  $scope.registerResponse = response.data;
-                  if ($scope.registerResponse === 'Duplicate login entry') {
-                    swal ( "Oops",  "Account with this login already exists!",  "error" )
-                    return;
-                  }
-                  if ($scope.registerResponse === 'Duplicate e-mail entry') {
-                    swal ( "Oops",  "Account with this e-mail already exists!",  "error" )
-                    return;
-                  }
-                  if ($scope.registerResponse === 'Success') {
-                    swal ( "Yeah!",  "Your account has been registered!",  "success" )
-                    return;
-                  }
-                  else {
-                    swal ( "Oops",  "Something went wrong, try again!",  "error" )
-                    return;
-                  }
-                })
-            }
-          })
+  $scope.registerFunction = function() {
+  $http({
+    method: "post",
+    url: './php/registration.php',
+    data: {
+        firstname: $scope.registerData.firstname,
+        lastname: $scope.registerData.lastname,
+        username: $scope.registerData.username,
+        password: $scope.registerData.password,
+        email: $scope.registerData.email,
+        city: $scope.registerData.city,
+        postalcode: $scope.registerData.postalcode,
+        adress: $scope.registerData.adress,
+        country: $scope.registerData.country,
+    },
+    headers: { 'Content-Type': 'application/json' }
+    }).then(function successCallback(response) {
+          $scope.registerResponse = response.data;
+          if ($scope.registerResponse === 'Duplicate login entry') {
+            swal ( "Oops",  "Account with this login already exists!",  "error" )
+            return;
+          }
+          if ($scope.registerResponse === 'Duplicate e-mail entry') {
+            swal ( "Oops",  "Account with this e-mail already exists!",  "error" )
+            return;
+          }
+          if ($scope.registerResponse === 'Success') {
+            swal ( "Yeah!",  "Your account has been registered!",  "success" )
+            return;
+          }
+          else {
+            swal ( "Oops",  "Something went wrong, try again!",  "error" )
+            return;
+          }
+        })
+    }})
 
 .controller('loginController', function($rootScope, $scope, $http, $cookieStore) {
-      this.loginForm = function() {
-          var encodedLogin = 'login=' +
-              encodeURIComponent(this.inputData.login) +
-              '&password=' +
-              encodeURIComponent(this.inputData.password);
-
+          $scope.loginData = {username: null, password: null};
+          $scope.loginFunction = function() {
           $http({
-              method: 'POST',
+              method: 'post',
               url: './php/login.php',
-              data: encodedLogin,
-              headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+              data: {
+              username: $scope.loginData.username,
+              password: $scope.loginData.password,
+              },
+              headers: {'Content-Type': 'application/x-www-form-urlencoded'}
           })
 
           .then(function successCallback(data) {
             $rootScope.user = data.data;
-                if ($rootScope.user[0].account_id > 0) {
+                if ($rootScope.user[0].account_id != 0) {
                   $rootScope.authenticated = true;
                   swal ( "Success!",  "You have been succesfully logged in.",  "success" )
                   $(function () {
@@ -98,8 +86,12 @@ angular.module('myShop')
                   $cookieStore.put('user', $rootScope.user);
                   return;
                 }
-                if ($rootScope.user === 'wrong') {
-                  swal ( "Oops",  "Username or password is incorrect! Try again.",  "error" )
+                if ($rootScope.user === 'Wrong password') {
+                  swal ( "Oops",  "Password is incorrect! Try again.",  "error" )
+                  return;
+                }
+                if ($rootScope.user === 'No account') {
+                  swal ( "Oops",  "There is no account with this username! Try again.",  "error" )
                   return;
                 }
                 else {
@@ -107,5 +99,4 @@ angular.module('myShop')
                   return;
                 }
             })
-  }
-    });
+  }});

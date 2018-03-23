@@ -2,8 +2,7 @@
 include_once 'config.php';
 
 try {
-  $stmt = $dbh->query("SELECT * from countries");
-
+    $stmt = $dbh->prepare("SELECT * from countries");
     $stmt->execute();
 
   } catch (PDOException $e) {

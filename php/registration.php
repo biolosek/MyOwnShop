@@ -1,13 +1,21 @@
 <?php
-ini_set('default_charset', 'utf-8');
-header("Content-Type: text/html; charset=UTF-8");
 include_once 'config.php';
 
-print_r($_POST); exit;
+$data = file_get_contents("php://input");
+$data = json_decode($data, true);
 
 try {
-  $stmt = $dbh->prepare("INSERT INTO `accounts` (`account_id`, `firstname`, `lastname`, `login`, `password`, `email`, `city`, `postalcode`, `adress`, `country`, `role`)
-    VALUES (NULL,'".$_POST['firstname']."','".$_POST['lastname']."','".$_POST['login']."',MD5('".$_POST['password']."'),'".$_POST['email']."','".$_POST['city']."','".$_POST['postalcode']."','".$_POST['adress']."','".$_POST['country']."', 0) ");
+    $stmt = $dbh->prepare("INSERT INTO `accounts` (`account_id`, `firstname`, `lastname`, `username`, `password`, `email`, `city`, `postalcode`, `adress`, `country`, `role`)
+      VALUES (NULL, :firstname, :lastname, :username, :password, :email, :city, :postalcode, :adress, :country, 0) ");
+    $stmt->bindParam(':firstname', $data['firstname']);
+    $stmt->bindParam(':lastname', $data['lastname']);
+    $stmt->bindParam(':username', $data['username']);
+    $stmt->bindParam(':password', password_hash($data['password'], PASSWORD_DEFAULT));
+    $stmt->bindParam(':email', $data['email']);
+    $stmt->bindParam(':city', $data['city']);
+    $stmt->bindParam(':postalcode', $data['postalcode']);
+    $stmt->bindParam(':adress', $data['adress']);
+    $stmt->bindParam(':country', $data['country']);
     $stmt->execute();
   } catch (PDOException $e) {
       if (strpos($e->getMessage(), "for key 'login'") !== false) {
