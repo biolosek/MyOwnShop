@@ -1,6 +1,7 @@
 <!DOCTYPE html>
   <html ng-app="myShop">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="src/angularjs/angular.min.js"></script>
     <script src="src/angularjs/angular-animate.js"></script>
@@ -56,37 +57,37 @@
   </body>
   <div class="modal fade" id="registerModal">
     <div class="modal-dialog">
-      <div class="modal-content" ng-controller="registerController">
+      <div class="modal-content" ng-controller="registerController as registerCtrl">
         <div class="modal-header"><h4 class="modal-title">Sign Up</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
-        <div class="modal-body"><form name="registerForm">
+        <div class="modal-body"><form name="register" ng-submit="registerCtrl.registerForm()" accept-charset="UTF-8">
             <div class="row">
                 <div class="col-lg-6">
                   <label style="float: left;"><b>Firstname:</b></label>
-                  <input type="text" ng-model="registerData.firstname" class="form-control"></br>
+                  <input type="text" ng-model="registerCtrl.inputData.firstname" class="form-control"></br>
                   <label style="float: left;"><b>Lastname:</b></label>
-                  <input type="text" ng-model="registerData.lastname" class="form-control"></br>
+                  <input type="text" ng-model="registerCtrl.inputData.lastname" class="form-control"></br>
                   <label style="float: left;"><b><span class="redstar">*</span> Username:</b></label>
-                  <input type="text" ng-model="registerData.login" class="form-control">
+                  <input type="text" ng-model="registerCtrl.inputData.login" class="form-control">
                   <span ng-show="registerData.login.length < 6" class="badge badge-danger">Username must be 6-45 tekens.</span></br>
                   <label style="float: left;"><b><span class="redstar">*</span> Password:</b></label>
-                  <input type="password" ng-model="registerData.password" class="form-control">
+                  <input type="password" ng-model="registerCtrl.inputData.password" class="form-control">
                   <span ng-show="registerData.password.length < 8" class="badge badge-danger">Password must be at least 8 tekens.</span></br>
                   <label style="float: left;"><b><span class="redstar">*</span> Repeat Password:</b></label>
                   <input type="password" ng-model="repeat" class="form-control">
-                  <span ng-show="repeat != registerData.password" class="badge badge-danger">Passwords aren't the same.</span></br>
+                  <span ng-show="repeat != registerCtrl.inputData.password" class="badge badge-danger">Passwords aren't the same.</span></br>
                 </div>
                 <div class="col-lg-6">
                   <label style="float: left;"><b><span class="redstar">*</span> E-Mail:</b></label>
-                  <input type="email" name="email" ng-model="registerData.email" ng-pattern="emailFormat" class="form-control">
+                  <input type="email" name="email" ng-model="registerCtrl.inputData.email" ng-pattern="emailFormat" class="form-control">
                   <span ng-show="registerForm.email.$error.pattern" class="error badge badge-danger">This e-mail is incorrect.</span></br>
                   <label style="float: left;"><b>City:</b></label>
-                  <input type="text" ng-model="registerData.city" class="form-control"></br>
+                  <input type="text" ng-model="registerCtrl.inputData.city" class="form-control"></br>
                   <label style="float: left;"><b>Postal Code:</b></label>
-                  <input type="text" ng-model="registerData.postalcode" class="form-control"></br>
+                  <input type="text" ng-model="registerCtrl.inputData.postalcode" class="form-control"></br>
                   <label style="float: left;"><b>Adress:</b></label>
-                  <input type="text" ng-model="registerData.adress" class="form-control"></br>
+                  <input type="text" ng-model="registerCtrl.inputData.adress" class="form-control"></br>
                   <label style="float: left;"><b>Country:</b></label>
-                  <select class="form-control" ng-model="registerData.country" required>
+                  <select class="form-control" ng-model="registerCtrl.inputData.country" required>
                     <option value='' ng-selected="null" disabled>
                       Select Country
                     </option>
@@ -99,8 +100,9 @@
                   <p style="float:left;">Fields marked with <span class="redstar"><b>*</b></span> are required.</p></br>
                 </div>
             </div>
-        </form></div>
-        <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button type="button" class="btn btn-success" data-dismiss="modal" ng-click="registerFunction()">Sign Up</button></div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button type="submit" class="btn btn-success">Sign Up</button></div>
+        </form>
         </div></div>
     </div>
 
@@ -108,7 +110,7 @@
       <div class="modal-content" ng-controller="loginController as loginCtrl">
         <div class="modal-header"><h4 class="modal-title">Sign In</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
         <div class="modal-body">
-      <form name="login" name="login" ng-submit="loginCtrl.loginForm()">
+      <form name="login" ng-submit="loginCtrl.loginForm()">
               <div class="row">
                   <div class="col-lg-6">
                     <label style="float: left;" for="inputUsername"><b>Login:</b></label>
