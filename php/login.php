@@ -5,8 +5,7 @@ $data = file_get_contents("php://input");
 $data = json_decode($data, true);
 
 try {
-  $stmt = $dbh->prepare("SELECT * from accounts WHERE
-    username=:username");
+  $stmt = $dbh->prepare("SELECT * from accounts WHERE username=:username");
   $stmt->bindParam(':username', $data['username']);
   $stmt->execute();
   } catch (PDOException $e) {
@@ -34,3 +33,5 @@ try {
     echo 'Something went wrong';
     exit;
   }
+
+?>
