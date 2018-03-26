@@ -6,7 +6,7 @@ $data = json_decode($data, true);
 
 try {
     $stmt = $dbh->prepare("INSERT INTO `accounts` (`account_id`, `firstname`, `lastname`, `username`, `password`, `email`, `city`, `postalcode`, `adress`, `country`, `role`)
-      VALUES (NULL, :firstname, :lastname, :username, :password, :email, :city, :postalcode, :adress, :country, 0) ");
+      VALUES (NULL, :firstname, :lastname, :username, :password, :email, :city, :postalcode, :adress, :country, 0)");
     $stmt->bindParam(':firstname', $data['firstname']);
     $stmt->bindParam(':lastname', $data['lastname']);
     $stmt->bindParam(':username', $data['username']);
@@ -21,14 +21,13 @@ try {
       if (strpos($e->getMessage(), "for key 'login'") !== false) {
           echo 'Duplicate login entry';
           exit;
-      } if (strpos($e->getMessage(), "for key 'email'") !== false) {
+    } if (strpos($e->getMessage(), "for key 'email'") !== false) {
           echo 'Duplicate e-mail entry';
           exit;
-      }
-      else {
+    } else {
           throw $e;
       }
   }
   echo 'Success';
-  
+
 ?>

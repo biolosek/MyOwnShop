@@ -1,0 +1,10 @@
+<div style="margin-top: 20px;" class="row" ng-show="!authenticated || $root.user[0].role == 0">
+<div class="col col-lg-12">
+<div class="alert alert-danger" role="alert"> <strong>No permission!</strong> You are not allowed to view this page.</div>
+</div>
+</div>
+<div style="margin-top: 20px;" class="row" ng-show="authenticated && $root.user[0].role > 0">
+<div class="col col-lg-12">
+<h4>Jebać</h4>
+</div>
+</div>
