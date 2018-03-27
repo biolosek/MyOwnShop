@@ -1,0 +1,53 @@
+<div class="row" style="margin-top: 10px;">
+<div class="col-lg-3" style="margin-top: 10px;">
+    <input style="margin-left:10px;" type="text" class="form-control" placeholder="Szukaj..." ng-model="search"></br>
+<div id="accordion" style="margin-left: 10px; margin-right: -10px !important;">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-default" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Categories
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        <div class="custom-control custom-checkbox" ng-repeat="item in categories">
+            <input type="checkbox" class="custom-control-input" id="checkbox-{{item.name}}">
+            <label class="custom-control-label" for="checkbox-{{item.name}}">{{item.name}}</label>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-default collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Brands
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+        <div class="custom-control custom-checkbox" ng-repeat="item in brands">
+            <input type="checkbox" class="custom-control-input" id="checkbox-{{item.name}}">
+            <label class="custom-control-label" for="checkbox-{{item.name}}">{{item.name}} </label>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+  <div class="col-lg-9">
+    <div class="well" style="padding:20px; margin-top: 10px; border: 1px solid black;" ng-repeat="item in products | filter:search">
+  <h4>
+    <strong>{{item.name}}</strong>
+    <span class="float-right badge badge-primary">
+      {{item.price | currency}}
+    </span>
+  </h4>
+  <button ng-click="getProductsOnAdd(item);" class="btn btn-success float-right">Dodaj do koszyka</button>
+  <span class="lead">{{item.description}}</span>
+</div>
+</div>
+  </div>

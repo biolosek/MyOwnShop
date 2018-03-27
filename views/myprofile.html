@@ -4,7 +4,8 @@
 </div>
 </div>
 <div ng-show="authenticated" style="margin-top: 20px;" class="row">
-  <div class="col col-lg-4">
+  <div class="col col-lg-4" style="border: 1px solid black; padding: 10px;">
+    <h4>Personal Data:</h4>
     <form ng-controller="updateinfoController">
       <label for="firstname">Firstname:</label>
       <input type="text" name="firstname" class="form-control" ng-model="$root.user[0].firstname">
@@ -35,11 +36,10 @@
       <button type="button" class="btn btn-success btn-block" ng-click="updateinfoFunction()">Save Changes</button>
     </form>
   </div>
-  <div  class="col col-lg-4">
-    adawdad
+  <div  class="col col-lg-1">
   </div>
-  <div  class="col col-lg-4">
-    adawdad
+  <div  class="col col-lg-7" style="border: 1px solid black; padding: 10px;">
+    <h4>My Orders:</h4>
   </div>
 </div>
 

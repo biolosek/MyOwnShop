@@ -6,7 +6,7 @@ $data = json_decode($data, true);
 
 try {
   $stmt = $dbh->prepare("SELECT * from accounts WHERE username=:username");
-  $stmt->bindParam(':username', $data['username']);
+  $stmt->bindValue(':username', $data['username']);
   $stmt->execute();
   } catch (PDOException $e) {
           throw $e;
@@ -19,8 +19,8 @@ try {
     if (password_verify($data['passwordold'], $result[0]['password'])) {
       try {
         $stmt = $dbh->prepare("UPDATE accounts SET password=:passwordnew  WHERE username=:username");
-        $stmt->bindParam(':username', $data['username']);
-        $stmt->bindParam(':passwordnew', password_hash($data['passwordnew'], PASSWORD_DEFAULT));
+        $stmt->bindValue(':username', $data['username']);
+        $stmt->bindValue(':passwordnew', password_hash($data['passwordnew'], PASSWORD_DEFAULT));
         $stmt->execute();
         } catch (PDOException $e) {
                 throw $e;

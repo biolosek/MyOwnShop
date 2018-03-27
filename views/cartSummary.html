@@ -1,0 +1,12 @@
+<style>
+	.navbar-right { float:right !important; margin-right: 5px; background-color: grey; padding: 10px; position: fixed; bottom: 10px; right: 10px; z-index: 2;}
+	.navbar-text { margin-right: 10px; color: white !important;}
+</style>
+<div class="navbar-right">
+	<div class="navbar-text">
+		<b>Cart:</b>
+		{{itemCount()}} product(s),
+		{{total() | currency}}
+	</div>
+	<a href="#!checkout" class="btn btn-primary">Go to Cart</a>
+</div>

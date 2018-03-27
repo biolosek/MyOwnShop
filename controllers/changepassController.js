@@ -15,7 +15,7 @@ angular.module('myShop')
   .then(function successCallback(data){
     $scope.changePassResponse = data.data;
      if($scope.changePassResponse === 'Success'){
-       swal ( "Success!",  "You password has been changed.",  "success" )
+       swal ( "Success!",  "Your password has been changed.",  "success" )
        $(function () {
          $('#changePassModal').modal('toggle');
        });
