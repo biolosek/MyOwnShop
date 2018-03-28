@@ -28,3 +28,13 @@
 .form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
     display: none;
 }
+.insider {
+  padding: 10px;
+  border: 1px black solid;
+}
+.well:first-child {
+  margin-top: 0px !important;
+}
+.well {
+  margin-top: 10px;
+}

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 22 Mar 2018, 16:43
+-- Czas generowania: 28 Mar 2018, 16:52
 -- Wersja serwera: 10.1.28-MariaDB
--- Wersja PHP: 5.6.32
+-- Wersja PHP: 7.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,15 +32,35 @@ CREATE TABLE `accounts` (
   `account_id` int(11) NOT NULL,
   `firstname` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
   `lastname` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
-  `login` varchar(45) CHARACTER SET latin1 NOT NULL,
+  `username` varchar(45) CHARACTER SET latin1 NOT NULL,
   `password` varchar(255) CHARACTER SET latin1 NOT NULL,
   `email` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `city` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `postalcode` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `adress` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `country` int(3) NOT NULL,
+  `city` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `postalcode` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
+  `adress` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `country` int(3) DEFAULT NULL,
   `role` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `brands`
+--
+
+CREATE TABLE `brands` (
+  `brand_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `brands`
+--
+
+INSERT INTO `brands` (`brand_id`, `name`, `active`) VALUES
+(1, 'Test Brand 1', 1),
+(2, 'Test Brand 2', 1);
 
 -- --------------------------------------------------------
 
@@ -50,9 +70,9 @@ CREATE TABLE `accounts` (
 
 CREATE TABLE `countries` (
   `country_id` int(11) NOT NULL,
-  `shortcut` varchar(2) NOT NULL,
-  `name` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `shortcut` varchar(2) CHARACTER SET latin1 NOT NULL,
+  `name` varchar(45) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Zrzut danych tabeli `countries`
@@ -305,6 +325,63 @@ INSERT INTO `countries` (`country_id`, `shortcut`, `name`) VALUES
 (244, 'ZM', 'Zambia'),
 (245, 'ZW', 'Zimbabwe');
 
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `products`
+--
+
+CREATE TABLE `products` (
+  `product_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `description` text,
+  `quantity` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `category` int(11) NOT NULL,
+  `brand` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `products`
+--
+
+INSERT INTO `products` (`product_id`, `name`, `price`, `description`, `quantity`, `active`, `category`, `brand`) VALUES
+(1, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(2, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(3, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(4, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(5, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(6, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(7, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(8, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(9, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(10, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(11, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(12, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `products_categories`
+--
+
+CREATE TABLE `products_categories` (
+  `category_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `products_categories`
+--
+
+INSERT INTO `products_categories` (`category_id`, `name`, `active`) VALUES
+(1, 'Ciuchy', 1),
+(2, 'Inne Zbocze?sta', 1),
+(3, 'Placki', 1),
+(4, 'I ogólnie takie takie', 1);
+
 --
 -- Indeksy dla zrzutów tabel
 --
@@ -314,8 +391,16 @@ INSERT INTO `countries` (`country_id`, `shortcut`, `name`) VALUES
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`account_id`),
-  ADD UNIQUE KEY `login` (`login`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `login` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `country` (`country`);
+
+--
+-- Indexes for table `brands`
+--
+ALTER TABLE `brands`
+  ADD PRIMARY KEY (`brand_id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `countries`
@@ -325,6 +410,21 @@ ALTER TABLE `countries`
   ADD UNIQUE KEY `shortcut` (`shortcut`);
 
 --
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `category` (`category`),
+  ADD KEY `brand` (`brand`);
+
+--
+-- Indexes for table `products_categories`
+--
+ALTER TABLE `products_categories`
+  ADD PRIMARY KEY (`category_id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -332,13 +432,48 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT dla tabeli `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT dla tabeli `brands`
+--
+ALTER TABLE `brands`
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT dla tabeli `countries`
 --
 ALTER TABLE `countries`
   MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;
+
+--
+-- AUTO_INCREMENT dla tabeli `products`
+--
+ALTER TABLE `products`
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT dla tabeli `products_categories`
+--
+ALTER TABLE `products_categories`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Ograniczenia dla zrzutów tabel
+--
+
+--
+-- Ograniczenia dla tabeli `accounts`
+--
+ALTER TABLE `accounts`
+  ADD CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`country`) REFERENCES `countries` (`country_id`);
+
+--
+-- Ograniczenia dla tabeli `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category`) REFERENCES `products_categories` (`category_id`),
+  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`brand`) REFERENCES `brands` (`brand_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

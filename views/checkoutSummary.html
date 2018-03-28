@@ -1,5 +1,5 @@
 <div class="row" style="margin-top: 20px;" ng-controller="cartSummaryController">
-	<div class="col col-lg-12" style="border: 1px solid black; padding: 10px;">
+	<div class="col col-lg-12" style="border: 1px solid black; padding: 20px;">
 	<h4>Your Cart:</h4>
 	<div class="alert alert-warning" ng-hide="cartData.length != undefined && cartData.length != 0">
 		Shopping cart is empty.
@@ -18,7 +18,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="item in cartData">
-					<td class="text-center">{{item.count}}</td>
+					<td class="text-left"><input onkeydown="return false" ng-click="updateCartData()" style="width: 33%;" type="number" min="1" max="99" class="form-control" ng-model="cartData[$index].count"></td>
 					<td class="text-left">{{item.name}}</td>
 					<td class="text-right">{{item.price | currency}}</td>
 					<td class="text-right">{{ (item.price * item.count) | currency }}</td>

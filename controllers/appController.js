@@ -93,37 +93,6 @@ angular.module('myShop')
     })
 }
 
-$rootScope.getProductsFunction = function() {
-$http({
-    method: 'get',
-    url: './php/getProducts.php',
-})
-
-.then(function successCallback(data) {
-  $rootScope.products = data.data;
-  })
-}
-$rootScope.getCategoriesFunction = function() {
-$http({
-    method: 'get',
-    url: './php/getCategories.php',
-})
-
-.then(function successCallback(data) {
-  $rootScope.categories = data.data;
-  })
-}
-
-$rootScope.getBrandsFunction = function() {
-$http({
-    method: 'get',
-    url: './php/getBrands.php',
-})
-
-.then(function successCallback(data) {
-  $rootScope.brands = data.data;
-  })
-}
 
 })
 .config(function ($routeProvider) {
@@ -147,7 +116,42 @@ $http({
     templateUrl: "./views/app.html"
   });
 })
-.controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart){
+.controller('appController', function($scope, $cookieStore, $window, $rootScope, $http){
+	$scope.getProductsFunction = function() {
+	$http({
+	    method: 'get',
+	    url: './php/getProducts.php',
+	})
+
+	.then(function successCallback(data) {
+	  $scope.products = data.data;
+	  })
+	}
+	$scope.getBrandsFunction = function() {
+	$http({
+	    method: 'get',
+	    url: './php/getBrands.php',
+	})
+
+	.then(function successCallback(data) {
+	  $scope.brands = data.data;
+	  })
+	}
+
+	$scope.getCategoriesFunction = function() {
+	$http({
+	    method: 'get',
+	    url: './php/getCategories.php',
+	})
+
+	.then(function successCallback(data) {
+	  $scope.categories = data.data;
+	  })
+	}
+	$scope.updateCartData = function() {
+		$cookieStore.remove('cartData');
+		$cookieStore.put('cartData', cartData);
+	};
 	$scope.getProductsOnAdd = function(item) {
 	$http({
 	    method: 'post',
@@ -158,8 +162,40 @@ $http({
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 	})
 	.then(function successCallback(product) {
-		$rootScope.getProductsFunction();
+		$scope.getProductsOnFilters();
 	  cart.addProduct(product.data[0].product_id, product.data[0].name, product.data[0].price);
+	  })
+	}
+	$scope.getProductsOnFilters = function() {
+		var categories = [];
+		angular.forEach($scope.categories, function(val) {
+			if (val.checked) categories.push(parseInt(val.category_id));
+		})
+		var brands = [];
+		angular.forEach($scope.brands, function(val) {
+			if (val.checked) brands.push(parseInt(val.brand_id));
+		})
+	$http({
+	    method: 'post',
+	    url: './php/getProductsOnFilters.php',
+			data : {
+				categories : categories,
+				brands : brands,
+			},
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	})
+	.then(function successCallback(data) {
+		$scope.filtersResponse = data.data;
+		if(angular.isArray($scope.filtersResponse)){
+			$scope.products = $scope.filtersResponse;
+			return;
+		}
+		else {
+			$scope.getProductsFunction();
+			swal ( "Oops",  "There was an error while applying the filters, try again!",  "error" );
+			$scope.productsfilters = {categories: [],  brands: []};
+		}
+
 	  })
 	}
   $scope.getCountries = function() {
@@ -168,7 +204,7 @@ $http({
     url: './php/getCountries.php',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     }).then(function successCallback(response) {
-          $rootScope.countries = response.data;
+          $scope.countries = response.data;
         })};
   $rootScope.logout = function(){
   $cookieStore.remove('authenticated');
@@ -176,8 +212,14 @@ $http({
   $window.location.reload();
   }
   $scope.getCountries();
-  $rootScope.getProductsFunction();
-  $rootScope.getCategoriesFunction();
-	$rootScope.getBrandsFunction();
-  console.log($rootScope);
+  $scope.getProductsFunction();
+  $scope.getCategoriesFunction();
+	$scope.getBrandsFunction();
+
+	$scope.$watch('categories', function() {
+		$scope.getProductsOnFilters();
+	}, true);
+	$scope.$watch('brands', function() {
+		$scope.getProductsOnFilters();
+	}, true);
 });
