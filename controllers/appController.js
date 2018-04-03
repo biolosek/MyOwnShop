@@ -116,7 +116,35 @@ angular.module('myShop')
     templateUrl: "./views/app.html"
   });
 })
-.controller('appController', function($scope, $cookieStore, $window, $rootScope, $http){
+.filter('startFrom', function() {
+	return function(input, currentPage, perPage) {
+		return input.slice((currentPage-1) * perPage, perPage * currentPage);
+	}
+})
+.controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $log, $timeout){
+	 $timeout( function(){
+		 $scope.totalItems = $scope.products.length;
+	 }, 1000 );
+  $scope.currentPage = 1;
+	$scope.perPage = 5;
+
+  $scope.setPage = function (pageNo) {
+    $scope.currentPage = pageNo;
+  };
+
+  $scope.pageChanged = function() {
+    $log.log('Page changed to: ' + $scope.currentPage);
+  };
+
+  $scope.maxSize = 3;
+    // $scope.currentPage = 0;
+    // $scope.pageSize = 10;
+    // $scope.numberOfPages=function(){
+    //     return Math.ceil($scope.products.length/$scope.pageSize);
+    // for (var i=0; i<1545; i++) {
+    //     $scope.products.push("Item "+i);
+    // }}
+
 	$scope.getProductsFunction = function() {
 	$http({
 	    method: 'get',

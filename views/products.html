@@ -1,5 +1,5 @@
-<div class="row" style="margin-top: 10px;">
-<div class="col-lg-3" style="margin-top: 10px; padding: 10px; border: 1px solid black;">
+<div class="row d-block" style="margin-top: 10px;">
+<div class="col-lg-3 float-left" style="margin-top: 10px; padding: 10px; border: 1px solid black;">
   <div class="insider">
   <h4> Filters : </h4>
     <input type="text" class="form-control" placeholder="Szukaj..." ng-model="search"></br>
@@ -15,7 +15,7 @@
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
         <div class="custom-control custom-checkbox" ng-repeat="item in categories">
-            <input type="checkbox" ng-model="item.checked" value="{{item.checked}}" class="custom-control-input" id="checkbox-{{item.name}}">
+            <input type="checkbox" ng-click="currentPage=0" ng-model="item.checked" value="{{item.checked}}" class="custom-control-input" id="checkbox-{{item.name}}">
             <label class="custom-control-label" for="checkbox-{{item.name}}">{{item.name}}</label>
           </div>
       </div>
@@ -42,9 +42,9 @@
 <button type="button" class="btn btn-outline-primary btn-block">Clear Filters</button>
 </div>
 </div>
-  <div class="col-lg-9" style="margin-top: 10px;">
+  <div class="col-lg-9 float-left" style="margin-top: 10px;">
     <div class="insider">
-    <div class="well" style="padding:20px; border: 1px solid black;" ng-repeat="item in products | filter:search">
+    <div class="well" style="padding:20px; border: 1px solid black;" ng-repeat="item in products | filter:search | startFrom:currentPage:perPage">
   <h4>
     <strong>{{item.name}}</strong>
     <span class="float-right badge badge-info">
@@ -53,8 +53,12 @@
   </h4>
   <button ng-click="getProductsOnAdd(item);" class="btn btn-success float-right">Dodaj do koszyka</button>
   <span class="lead">{{item.description}}</span>
-</div>
-</div>
-<uib-pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" num-pages="numPages"></uib-pagination>
-</div>
   </div>
+  <div class="alert alert-warning" ng-show="products.length == 0">
+    We didn't find any result with this criteria.
+    <a ng-click="getProductsFunction()" class="alert-link">Click here to reset filters.</a>
+  </div>
+</div></br>
+  <ul uib-pagination boundary-links="true" items-per-page="perPage" total-items="(products | filter:search).length" ng-model="currentPage" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+</div>
+</div>

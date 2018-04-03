@@ -38,3 +38,30 @@
 .well {
   margin-top: 10px;
 }
+.pagination {
+    display: inline-block;
+}
+.pagination li {
+    color: white;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-left: none !important;
+    border: 1px solid #000;
+}
+.pagination li.active {
+    background-color: #333;
+    color: white !important;
+}
+.pagination li.active a {
+    background-color: #333;
+    color: white !important;
+}
+.pagination li a {
+  text-decoration: none !important;
+}
+
+.pagination li:hover:not(.active) {background-color: #ddd;}
+.pagination li:first-child {
+  border-left: 1px solid black !important;
+}
