@@ -1,0 +1,49 @@
+<div class="row">
+<div class="col col-lg-3 col-md-12 col-sm-12">
+   <h4>Dane do faktury:</h4>
+   <form name="myForm" style="padding-left: 20px;" onselectstart="return false;">
+     <label>
+       <input type="radio" ng-model="form" ng-value="0">
+       Particular
+     </label>
+     <label style="padding-left: 25px;">
+       <input type="radio" ng-model="form" ng-value="1">
+       Company
+     </label><br/>
+    </form>
+   <form ng-show="form == 0 && form != 1">
+     <label for="firstname"><span class="redstar">*</span> Name:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.firstname" ng-value="$root.user[0].firstname + ' ' + $root.user[0].lastname">
+     <label for="firstname"><span class="redstar">*</span> Adress:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.adress" ng-value="$root.user[0].adress">
+     <label for="firstname"><span class="redstar">*</span> Postal Code:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.postalcode" ng-value="$root.user[0].postalcode">
+     <label for="firstname"><span class="redstar">*</span> City:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.city" ng-value="$root.user[0].city">
+   </form>
+   <form ng-show="form != 0 && form == 1">
+     <label for="firstname"><span class="yellowstar">*</span> Name:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.firstname" ng-value="$root.user[0].firstname + ' ' + $root.user[0].lastname">
+     <span ng-hide="formPlace.firstname.length > 0 || formPlace.company.length > 0" class="badge badge-warning">One of those fields must be filled in.</span>
+     <label for="firstname"><span class="yellowstar">*</span> Company Name:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.company">
+     <span ng-hide="formPlace.firstname.length > 0 || formPlace.company.length > 0" class="badge badge-warning">One of those fields must be filled in.</span>
+     <label for="firstname"><span class="redstar">*</span> Numer Identyfikacji Podatkowej :</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.nip">
+     <label for="firstname"><span class="redstar">*</span> Adress:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.adress" ng-value="$root.user[0].adress">
+     <label for="firstname"><span class="redstar">*</span> Postal Code:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.postalcode" ng-value="$root.user[0].postalcode">
+     <label for="firstname"><span class="redstar">*</span> City:</label>
+     <input type="text" name="firstname" class="form-control" ng-model="formPlace.city" ng-value="$root.user[0].city">
+   </form>
+   Field marked with <span class="redstar">*</span>  are required.</br>
+   One of fields marked with <span class="yellowstar">*</span> is required.
+</div>
+<div class="col col-lg-3 col-sm-12">
+
+</div>
+<div class="col col-lg-6 col-sm-12">
+
+</div>
+</div>

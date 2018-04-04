@@ -7,6 +7,12 @@
 .redstar{
   color: #dc3545;
 }
+.yellowstar{
+  color: #ffc107;
+}
+.greenstar{
+  color: #28a745;
+}
 .form-group input[type="checkbox"] {
     display: none;
 }

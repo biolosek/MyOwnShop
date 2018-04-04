@@ -59,6 +59,6 @@
     <a ng-click="getProductsFunction()" class="alert-link">Click here to reset filters.</a>
   </div>
 </div></br>
-  <ul uib-pagination boundary-links="true" items-per-page="perPage" total-items="(products | filter:search).length" ng-model="currentPage" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+  <ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="(products | filter:search).length" ng-model="currentPage" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
 </div>
 </div>

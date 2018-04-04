@@ -112,6 +112,10 @@ angular.module('myShop')
 	templateUrl: "./views/checkoutSummary.html"
 	});
 
+	$routeProvider.when("/placeorder", {
+	templateUrl: "./views/placeOrder.html"
+	});
+
   $routeProvider.otherwise({
     templateUrl: "./views/app.html"
   });
@@ -121,29 +125,15 @@ angular.module('myShop')
 		return input.slice((currentPage-1) * perPage, perPage * currentPage);
 	}
 })
-.controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $log, $timeout){
+.controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
+	$scope.form = 0;
 	 $timeout( function(){
 		 $scope.totalItems = $scope.products.length;
 	 }, 1000 );
+
   $scope.currentPage = 1;
 	$scope.perPage = 5;
-
-  $scope.setPage = function (pageNo) {
-    $scope.currentPage = pageNo;
-  };
-
-  $scope.pageChanged = function() {
-    $log.log('Page changed to: ' + $scope.currentPage);
-  };
-
   $scope.maxSize = 3;
-    // $scope.currentPage = 0;
-    // $scope.pageSize = 10;
-    // $scope.numberOfPages=function(){
-    //     return Math.ceil($scope.products.length/$scope.pageSize);
-    // for (var i=0; i<1545; i++) {
-    //     $scope.products.push("Item "+i);
-    // }}
 
 	$scope.getProductsFunction = function() {
 	$http({
@@ -225,6 +215,19 @@ angular.module('myShop')
 		}
 
 	  })
+	}
+	$scope.placeOrderFunction = function() {
+	$http({
+			method: 'post',
+			url: './php/placeOrder.php',
+			data : {
+				cartdata : $scope.cartData,
+				user : $rootScope.user[0].account_id,
+			},
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	})
+	.then(function successCallback(response) {
+		})
 	}
   $scope.getCountries = function() {
   $http({
