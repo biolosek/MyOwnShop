@@ -1,5 +1,20 @@
 angular.module('myShop')
 .controller('loginController', function($rootScope, $scope, $http, $cookieStore) {
+          $rootScope.getCompanies = function() {
+            $http({
+                method: 'post',
+                url: './php/getCompanies.php',
+                data: {
+                account_id: $rootScope.user[0].account_id,
+                },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .then(function successCallback(response) {
+              $rootScope.companies = response.data;
+              $cookieStore.remove('companies');
+              $cookieStore.put('companies', $rootScope.companies);
+            })
+          }
           $scope.loginData = {username: null, password: null};
           $scope.loginFunction = function() {
           $http({
@@ -23,6 +38,7 @@ angular.module('myShop')
                   });
                   $cookieStore.put('authenticated', $rootScope.authenticated);
                   $cookieStore.put('user', $rootScope.user);
+                  $scope.getCompanies();
                   return;
                 }
                 if ($scope.myResponse === 'Wrong password') {

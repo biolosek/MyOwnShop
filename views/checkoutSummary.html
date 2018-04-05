@@ -1,18 +1,19 @@
-<div class="row" style="margin-top: 20px;" ng-controller="cartSummaryController">
+<div class="row" style="margin-top: 10px;" ng-controller="cartSummaryController">
 	<div class="col col-lg-12" style="border: 1px solid black; padding: 20px;">
-	<h4>Your Cart:</h4>
+		<div class="insider">
+	<h4>Twój koszyk:</h4>
 	<div class="alert alert-warning" ng-hide="cartData.length != undefined && cartData.length != 0">
-		Shopping cart is empty.
-		<a href="#!products" class="alert-link">Click here to go shopping.</a>
+		Twój koszyk jest pusty.
+		<a href="#!products" class="alert-link">Kliknij tutaj aby zrobić zakupy.</a>
 	</div>
 	<div class="well" ng-show="cartData.length != undefined && cartData.length != 0">
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Quantity</th>
-					<th>Product</th>
-					<th class="text-right">Price</th>
-					<th class="text-right">Sum</th>
+					<th>Ilość</th>
+					<th>Produkt</th>
+					<th class="text-right">Cena</th>
+					<th class="text-right">Suma</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -29,17 +30,18 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4" class="text-right">Sum of your order:</td>
+					<td colspan="4" class="text-right">Suma twojego zamówienia:</td>
 					<td class="text-right">
 						{{total() | currency}}
 					</td>
 				</tr>
 			</tfoot>
 		</table>
-		<div class="text-center pull-right">
-			<a class="btn btn-primary" href="#!products">Continue Shopping</a>
-			<a class="btn btn-success" ng-click="placeOrderFunction()" href="#!placeorder">Place Order</a>
-		</div>
 	</div>
+</div></br>
+<div ng-show="cartData.length != undefined && cartData.length != 0" class="btn-group float-right">
+	<a class="btn btn-primary" href="#!products">Kontynuuj zakupy</a>
+	<a class="btn btn-success" ng-click="placeOrderFunction()" href="#!placeorder">Złóż zamówienie</a>
+</div>
 </div>
 </div>

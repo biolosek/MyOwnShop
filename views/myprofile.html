@@ -1,30 +1,33 @@
-<div ng-show="!authenticated" style="margin-top: 20px;" class="row">
+<div ng-show="!authenticated" style="margin-top: 10px;" class="row">
   <div class="col col-lg-12">
+    <div class="insider">
   <div class="alert alert-danger" role="alert"> <strong>No permission!</strong> You are not allowed to view this page.</div>
 </div>
 </div>
-<div ng-show="authenticated" style="margin-top: 20px;" class="row">
-  <div class="col col-lg-4" style="border: 1px solid black; padding: 10px;">
-    <h4>Personal Data:</h4>
+</div>
+<div ng-show="authenticated" style="margin-top: 10px; border: 1px solid black;" class="row">
+  <div class="col col-lg-4" style=" padding: 10px;">
+    <div class="insider">
+    <h4>Dane Personalne:</h4>
     <form ng-controller="updateinfoController">
-      <label for="firstname">Firstname:</label>
+      <label for="firstname">Imię:</label>
       <input type="text" name="firstname" class="form-control" ng-model="$root.user[0].firstname">
-      <label for="lastname">Lastname:</label>
+      <label for="lastname">Nazwisko:</label>
       <input type="text" name="lastname" class="form-control" ng-model="$root.user[0].lastname">
-      <label for="lastname">Username:</label>
+      <label for="lastname">Login:</label>
       <input type="text" name="lastname" class="form-control" ng-model="$root.user[0].username" disabled>
-      <label for="password">Password:</label>
+      <label for="password">Hasło:</label>
       <input type="password" name="password" class="form-control" ng-model="$root.user[0].password" disabled>
-      <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#changePassModal">Change Password</button>
+      <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#changePassModal">Zmień Hasło</button>
       <label for="password">E-Mail:</label>
       <input type="text" name="password" class="form-control" ng-model="$root.user[0].email">
-      <label for="password">City:</label>
-      <input type="text" name="password" class="form-control" ng-model="$root.user[0].city">
-      <label for="password">Postalcode:</label>
-      <input type="text" name="password" class="form-control" ng-model="$root.user[0].postalcode">
-      <label for="password">Adress:</label>
+      <label for="password">Adres:</label>
       <input type="text" name="password" class="form-control" ng-model="$root.user[0].adress">
-      <label for="password">Country:</label>
+      <label for="password">Miasto:</label>
+      <input type="text" name="password" class="form-control" ng-model="$root.user[0].city">
+      <label for="password">Kod Pocztowy:</label>
+      <input type="text" name="password" class="form-control" ng-model="$root.user[0].postalcode">
+      <label for="password">Kraj:</label>
       <select class="form-control" ng-model="$root.user[0].country" required>
         <option value='' ng-selected="null" disabled>
           Select Country
@@ -33,13 +36,78 @@
           {{item.name}}
         </option>
       </select></br>
-      <button type="button" class="btn btn-success btn-block" ng-click="updateinfoFunction()">Save Changes</button>
+      <button type="button" class="btn btn-success btn-block" ng-click="updateinfoFunction()">Zapisz Zmiany</button>
     </form>
   </div>
-  <div  class="col col-lg-1">
   </div>
-  <div  class="col col-lg-7" style="border: 1px solid black; padding: 10px;">
-    <h4>My Orders:</h4>
+  <div  class="col col-lg-8" style="padding: 10px;">
+    <div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-block" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Moje Zamówienia
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-block collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Moje Firmy
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nazwa Firmy</th>
+              <th>NIP</th>
+              <th>Adress</th>
+              <th>Kod Pocztowy</th>
+              <th>Miasto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in companies">
+              <td class="text-left">{{item.name}}</td>
+              <td class="text-left">{{item.nip}}</td>
+              <td class="text-left">{{item.adress}}</td>
+              <td class="text-left">{{item.postalcode}}</td>
+              <td>
+                {{item.city}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#changePassModal">Dodaj Firme</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <button class="btn btn-block collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Moje Adresy Dostawy
+        </button>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+</div>
   </div>
 </div>
 

@@ -5,13 +5,13 @@
   background-color: #28a745;
 }
 .redstar{
-  color: #dc3545;
+  color: #E74C3C;
 }
 .yellowstar{
-  color: #ffc107;
+  color: #F39C12;
 }
 .greenstar{
-  color: #28a745;
+  color: #18BC9C;
 }
 .form-group input[type="checkbox"] {
     display: none;

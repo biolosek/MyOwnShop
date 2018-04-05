@@ -1,5 +1,6 @@
-<div class="row d-block" style="margin-top: 10px;">
-<div class="col-lg-3 float-left" style="margin-top: 10px; padding: 10px; border: 1px solid black;">
+<div class="row" style="margin-top: 10px;">
+<div class="col-lg-3">
+  <div class="insider">
   <div class="insider">
   <h4> Filters : </h4>
     <input type="text" class="form-control" placeholder="Szukaj..." ng-model="search"></br>
@@ -42,7 +43,8 @@
 <button type="button" class="btn btn-outline-primary btn-block">Clear Filters</button>
 </div>
 </div>
-  <div class="col-lg-9 float-left" style="margin-top: 10px;">
+</div>
+  <div class="col-lg-9">
     <div class="insider">
     <div class="well" style="padding:20px; border: 1px solid black;" ng-repeat="item in products | filter:search | startFrom:currentPage:perPage">
   <h4>
@@ -59,6 +61,6 @@
     <a ng-click="getProductsFunction()" class="alert-link">Click here to reset filters.</a>
   </div>
 </div></br>
-  <ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="(products | filter:search).length" ng-model="currentPage" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+<ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="(products | filter:search).length" ng-model="currentPage" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
 </div>
 </div>

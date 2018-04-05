@@ -28,7 +28,6 @@ try {
     $stmt->bindValue(':adress', $data['adress']);
     $stmt->bindValue(':country', $data['country']);
     $stmt->execute();
-    $stmt->execute();
     } catch (PDOException $e) {
             throw $e;
         }

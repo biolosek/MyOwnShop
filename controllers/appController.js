@@ -37,6 +37,12 @@ angular.module('myShop')
 		}
 	}
 })
+.directive("informations", function () {
+  return {
+          restrict: "E",
+          templateUrl: "./views/informations.html",
+      }
+})
 .directive("cartSummary", function (cart) {
   return {
           restrict: "E",
@@ -65,6 +71,7 @@ angular.module('myShop')
 .run(function($rootScope, $cookieStore, $http){
   $rootScope.authenticated = $cookieStore.get('authenticated');
   $rootScope.user = $cookieStore.get('user');
+	$rootScope.companies = $cookieStore.get('companies');
 
   $rootScope.getUserInfo = function() {
   $http({
@@ -126,6 +133,23 @@ angular.module('myShop')
 	}
 })
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
+	$scope.company = {company_id : null, name: null, nip: null, adress: null, postalcode: null, city: null}
+	$scope.addCompany = function (){
+		$http({
+				method: 'post',
+				url: './php/getCompanies.php',
+				data: {
+				account_id: $rootScope.user[0].account_id,
+
+				},
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		})
+		.then(function successCallback(response) {
+			$rootScope.companies = response.data;
+			$cookieStore.remove('companies');
+			$cookieStore.put('companies', $rootScope.companies);
+		})
+	}
 	$scope.form = 0;
 	 $timeout( function(){
 		 $scope.totalItems = $scope.products.length;
@@ -222,7 +246,6 @@ angular.module('myShop')
 			url: './php/placeOrder.php',
 			data : {
 				cartdata : $scope.cartData,
-				user : $rootScope.user[0].account_id,
 			},
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 	})
@@ -240,6 +263,7 @@ angular.module('myShop')
   $rootScope.logout = function(){
   $cookieStore.remove('authenticated');
   $cookieStore.remove('user');
+	$cookieStore.remove('companies');
   $window.location.reload();
   }
   $scope.getCountries();
