@@ -72,6 +72,7 @@ angular.module('myShop')
   $rootScope.authenticated = $cookieStore.get('authenticated');
   $rootScope.user = $cookieStore.get('user');
 	$rootScope.companies = $cookieStore.get('companies');
+	$rootScope.shippings = $cookieStore.get('shippings');
 
   $rootScope.getUserInfo = function() {
   $http({
@@ -133,8 +134,24 @@ angular.module('myShop')
 	}
 })
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
+	$scope.shipping = {shipping_adress_id : null, name: null, data: null, adress: null, postalcode: null, city: null}
+	$rootScope.getShippingAdresses = function (){
+		$http({
+				method: 'post',
+				url: './php/getShippingAdresses.php',
+				data: {
+				account_id: $rootScope.user[0].account_id,
+				},
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		})
+		.then(function successCallback(response) {
+			$rootScope.shippings = response.data;
+			$cookieStore.remove('shippings');
+			$cookieStore.put('shippings', $rootScope.shippings);
+		})
+	}
 	$scope.company = {company_id : null, name: null, nip: null, adress: null, postalcode: null, city: null}
-	$scope.addCompany = function (){
+	$rootScope.getCompanies = function (){
 		$http({
 				method: 'post',
 				url: './php/getCompanies.php',
@@ -264,6 +281,7 @@ angular.module('myShop')
   $cookieStore.remove('authenticated');
   $cookieStore.remove('user');
 	$cookieStore.remove('companies');
+	$cookieStore.remove('shippings');
   $window.location.reload();
   }
   $scope.getCountries();

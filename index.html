@@ -22,6 +22,8 @@
     <script src="controllers/changepassController.js"></script>
     <script src="controllers/updateinfoController.js"></script>
     <script src="controllers/checkoutController.js"></script>
+    <script src="controllers/addCompanyController.js"></script>
+    <script src="controllers/addShippingController.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
     <script>
     $(function () {
@@ -57,16 +59,16 @@
           </ul>
         </div>
         <div class="btn-group float-right" ng-show="!authenticated">
-          <button class="btn btn-success modal-login" data-toggle="modal" href="#loginModal">Sign In</button>
-          <button class="btn btn-warning modal-register" data-toggle="modal" href="#registerModal">Sign Up</button>
-          <button class="btn btn-outline-danger">Forgot Password ?</button>
+          <button class="btn btn-success modal-login" data-toggle="modal" href="#loginModal">Zaloguj się</button>
+          <button class="btn btn-warning modal-register" data-toggle="modal" href="#registerModal">Rejestracja</button>
+          <button class="btn btn-outline-danger">Nie pamiętasz hasła ?</button>
         </div>
         <div ng-show="authenticated" class="float-right">
         <div class="btn-group">
-          <a ng-href="#!profile" class="btn btn-success">My Profile</a>
-          <a class="btn btn-outline-danger" ng-href="#" ng-click="logout()">Logout</a>
+          <a ng-href="#!profile" class="btn btn-success">Mój profil</a>
+          <a class="btn btn-outline-danger" ng-href="#" ng-click="logout()">Wyloguj się</a>
         </div>
-        <a ng-href="#!admin"><button class="btn btn-primary" ng-show="$root.user[0].role > 0">Admin</button></a>
+        <a ng-href="#!admin"><button class="btn btn-default" ng-show="$root.user[0].role > 0">Administracja</button></a>
       </div>
       </nav>
     </div>

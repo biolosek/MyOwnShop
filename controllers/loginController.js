@@ -1,5 +1,21 @@
 angular.module('myShop')
 .controller('loginController', function($rootScope, $scope, $http, $cookieStore) {
+          $rootScope.getShippingAdresses = function (){
+        		$http({
+        				method: 'post',
+        				url: './php/getShippingAdresses.php',
+        				data: {
+        				account_id: $rootScope.user[0].account_id,
+
+        				},
+        				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        		})
+        		.then(function successCallback(response) {
+        			$rootScope.shippings = response.data;
+        			$cookieStore.remove('shippings');
+        			$cookieStore.put('shippings', $rootScope.shippings);
+        		})
+        	}
           $rootScope.getCompanies = function() {
             $http({
                 method: 'post',
@@ -39,6 +55,7 @@ angular.module('myShop')
                   $cookieStore.put('authenticated', $rootScope.authenticated);
                   $cookieStore.put('user', $rootScope.user);
                   $scope.getCompanies();
+                  $scope.getShippingAdresses();
                   return;
                 }
                 if ($scope.myResponse === 'Wrong password') {

@@ -78,7 +78,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in companies">
+            <tr ng-repeat="item in companies track by $index">
               <td class="text-left">{{item.name}}</td>
               <td class="text-left">{{item.nip}}</td>
               <td class="text-left">{{item.adress}}</td>
@@ -89,7 +89,7 @@
             </tr>
           </tbody>
         </table>
-        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#changePassModal">Dodaj Firme</button>
+        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addCompanyModal">Dodaj Firme</button>
       </div>
     </div>
   </div>
@@ -103,7 +103,29 @@
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nazwa Adresu</th>
+              <th>Dane</th>
+              <th>Adres</th>
+              <th>Kod Pocztowy</th>
+              <th>Miasto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in shippings track by $index">
+              <td class="text-left">{{item.name}}</td>
+              <td class="text-left">{{item.data}}</td>
+              <td class="text-left">{{item.adress}}</td>
+              <td class="text-left">{{item.postalcode}}</td>
+              <td>
+                {{item.city}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addShippingModal">Dodaj Adres Dostawy</button>
       </div>
     </div>
   </div>
@@ -138,3 +160,51 @@
       <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button type="submit" ng-disabled="changePassData.passwordnewre != changePassData.passwordnew || changePassData.passwordnew.length < 8 || changePassData.passwordnew == null" ng-click="changePassFunction()" class="btn btn-success">Change Password</button></div></div></div>
       </form>
   </div>
+
+  <div class="modal fade" id="addCompanyModal"><div class="modal-dialog">
+    <div class="modal-content" ng-controller="addCompanyController">
+      <div class="modal-header"><h4 class="modal-title">Dodaj Firmę</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+      <div class="modal-body">
+    <form name="company">
+            <div class="row">
+                <div class="col-lg-12">
+                  <label style="float: left;" for="inputCompanyName"><b>Nazwa Firmy:</b></label>
+                  <input type="text" id="inputCompanyName" class="form-control" required autofocus ng-model="addCompanyData.name" autofocus/>
+                  <label style="float: left;" for="inputCompanyNip"><b>NIP:</b></label>
+                  <input id="inputCompanyNip" type="text" class="form-control" required ng-model="addCompanyData.nip"/>
+                  <label style="float: left;" for="inputCompanyAdress"><b>Adres:</b></label>
+                  <input id="inputCompanyAdress" type="text" class="form-control" required ng-model="addCompanyData.adress"/>
+                  <label style="float: left;" for="inputCompanyPostalcode"><b>Kod Pocztowy:</b></label>
+                  <input id="inputCompanyPostalcode" type="text" class="form-control" required ng-model="addCompanyData.postalcode"/>
+                  <label style="float: left;" for="inputCompanyCity"><b>Miasto:</b></label>
+                  <input id="inputCompanyCity" type="text" class="form-control" required ng-model="addCompanyData.city"/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="addCompanyFunction()" class="btn btn-success">Dodaj Firmę</button></div></div></div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="addShippingModal"><div class="modal-dialog">
+      <div class="modal-content" ng-controller="addShippingController">
+        <div class="modal-header"><h4 class="modal-title">Dodaj adres dostawy:</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-body">
+      <form name="shipping">
+              <div class="row">
+                  <div class="col-lg-12">
+                    <label style="float: left;" for="inputShippingName"><b>Nazwa:</b></label>
+                    <input type="text" id="inputShippingName" class="form-control" required autofocus ng-model="addShippingData.name" autofocus/>
+                    <label style="float: left;" for="inputShippingData"><b>Imię i Nazwisko:</b></label>
+                    <input id="inputShippingData" type="text" class="form-control" required ng-model="addShippingData.data"/>
+                    <label style="float: left;" for="inputShippingAdress"><b>Adres:</b></label>
+                    <input id="inputShippingAdress" type="text" class="form-control" required ng-model="addShippingData.adress"/>
+                    <label style="float: left;" for="inputShippingPostalcode"><b>Kod Pocztowy:</b></label>
+                    <input id="inputShippingPostalcode" type="text" class="form-control" required ng-model="addShippingData.postalcode"/>
+                    <label style="float: left;" for="inputShippingCity"><b>Miasto:</b></label>
+                    <input id="inputShippingCity" type="text" class="form-control" required ng-model="addShippingData.city"/>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="addShippingFunction()" class="btn btn-success">Dodaj Firmę</button></div></div></div>
+          </form>
+      </div>

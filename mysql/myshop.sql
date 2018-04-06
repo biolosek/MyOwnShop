@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 28 Mar 2018, 16:52
+-- Czas generowania: 06 Kwi 2018, 16:57
 -- Wersja serwera: 10.1.28-MariaDB
--- Wersja PHP: 7.1.10
+-- Wersja PHP: 5.6.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `accounts` (
   `account_id` int(11) NOT NULL,
-  `firstname` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `firstname` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
   `lastname` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
   `username` varchar(45) CHARACTER SET latin1 NOT NULL,
   `password` varchar(255) CHARACTER SET latin1 NOT NULL,
@@ -41,6 +41,13 @@ CREATE TABLE `accounts` (
   `country` int(3) DEFAULT NULL,
   `role` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Zrzut danych tabeli `accounts`
+--
+
+INSERT INTO `accounts` (`account_id`, `firstname`, `lastname`, `username`, `password`, `email`, `city`, `postalcode`, `adress`, `country`, `role`) VALUES
+(29, 'Wiktor', '?ukasiewicz', 'biolosek', '$2y$10$0J./OeaZICZdYISspv1SUuJcxmjj5sULzbzgHwRn2PueCjlcov0Fi', 'biolysubzero@gmail.com', '?mielow', '27-444', 'Sandomierska 222', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -358,7 +365,58 @@ INSERT INTO `products` (`product_id`, `name`, `price`, `description`, `quantity`
 (9, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
 (10, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
 (11, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(12, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1);
+(12, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
+(13, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(14, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(15, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(16, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(17, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(18, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(19, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(20, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(21, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(22, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(23, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(24, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
+(25, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(26, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(27, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(28, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(29, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(30, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(31, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(32, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(33, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(34, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(35, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(36, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
+(37, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(38, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(39, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(40, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(41, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(42, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(43, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(44, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(45, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(46, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(47, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(48, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
+(49, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(50, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(51, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(52, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(53, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(54, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(55, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(56, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(57, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
+(58, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(59, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(60, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
+(61, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
+(62, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
+(63, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -381,6 +439,57 @@ INSERT INTO `products_categories` (`category_id`, `name`, `active`) VALUES
 (2, 'Inne Zbocze?sta', 1),
 (3, 'Placki', 1),
 (4, 'I ogólnie takie takie', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `shipping_adresses`
+--
+
+CREATE TABLE `shipping_adresses` (
+  `shipping_adress_id` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `data` varchar(255) NOT NULL,
+  `adress` varchar(255) NOT NULL,
+  `postalcode` varchar(20) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `account_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `shipping_adresses`
+--
+
+INSERT INTO `shipping_adresses` (`shipping_adress_id`, `name`, `data`, `adress`, `postalcode`, `city`, `account_id`) VALUES
+(1, 'Nowy Testowy', 'Wiktorek', 'Tak tak 22', '676876', 'Miasto', 29),
+(2, 'Testowy', 'Nowy Testowy', 'Tak Tak', '2222', 'Tak', 29),
+(3, 'Jest tak', 'Jak jest', 'Test', '678678', 'Tak', 29);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `users_companies`
+--
+
+CREATE TABLE `users_companies` (
+  `company_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `nip` int(20) NOT NULL,
+  `adress` varchar(255) NOT NULL,
+  `postalcode` varchar(10) NOT NULL,
+  `city` varchar(45) NOT NULL,
+  `account_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `users_companies`
+--
+
+INSERT INTO `users_companies` (`company_id`, `name`, `nip`, `adress`, `postalcode`, `city`, `account_id`) VALUES
+(7, 'Nowa Testowa', 6687678, 'Taki tam adresik', '2786', 'Tak', 29),
+(8, 'Nowa Testowa 2', 668767833, 'Taki tam adresik', '2786', 'Tak', 29),
+(10, 'Nowa Testowa', 678678678, 'Tak', '78979', 'Tak', 29),
+(12, 'Nowa Testowa', 2147483647, 'Tak', '78979', 'Tak', 29);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -425,6 +534,21 @@ ALTER TABLE `products_categories`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indexes for table `shipping_adresses`
+--
+ALTER TABLE `shipping_adresses`
+  ADD PRIMARY KEY (`shipping_adress_id`),
+  ADD KEY `account_id` (`account_id`);
+
+--
+-- Indexes for table `users_companies`
+--
+ALTER TABLE `users_companies`
+  ADD PRIMARY KEY (`company_id`),
+  ADD UNIQUE KEY `nip` (`nip`),
+  ADD KEY `account_id` (`account_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -432,7 +556,7 @@ ALTER TABLE `products_categories`
 -- AUTO_INCREMENT dla tabeli `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT dla tabeli `brands`
@@ -450,13 +574,25 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT dla tabeli `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT dla tabeli `products_categories`
 --
 ALTER TABLE `products_categories`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT dla tabeli `shipping_adresses`
+--
+ALTER TABLE `shipping_adresses`
+  MODIFY `shipping_adress_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT dla tabeli `users_companies`
+--
+ALTER TABLE `users_companies`
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -474,6 +610,18 @@ ALTER TABLE `accounts`
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category`) REFERENCES `products_categories` (`category_id`),
   ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`brand`) REFERENCES `brands` (`brand_id`);
+
+--
+-- Ograniczenia dla tabeli `shipping_adresses`
+--
+ALTER TABLE `shipping_adresses`
+  ADD CONSTRAINT `shipping_adresses_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`);
+
+--
+-- Ograniczenia dla tabeli `users_companies`
+--
+ALTER TABLE `users_companies`
+  ADD CONSTRAINT `users_companies_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
