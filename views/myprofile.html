@@ -67,6 +67,7 @@
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
       <div class="card-body">
+        <input type="text" class="form-control float-left" placeholder="Szukaj..." ng-model="searchcompany">
         <table class="table">
           <thead>
             <tr>
@@ -75,10 +76,11 @@
               <th>Adress</th>
               <th>Kod Pocztowy</th>
               <th>Miasto</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in companies track by $index">
+            <tr ng-repeat="item in companies | filter:searchcompany | startFrom:currentPageCompany:perPage">
               <td class="text-left">{{item.name}}</td>
               <td class="text-left">{{item.nip}}</td>
               <td class="text-left">{{item.adress}}</td>
@@ -86,10 +88,17 @@
               <td>
                 {{item.city}}
               </td>
+              <td>
+                <div class="btn-group float-right">
+                <button ng-click="removeCompanyFunction(item)" class="btn btn-sm btn-danger"><i class="fas fa-minus-circle"></i></button>
+                <button ng-click="editCompanyFunction(item)" data-toggle="modal" data-target="#editCompanyModal" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+              </div>
+              </td>
             </tr>
           </tbody>
         </table>
-        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addCompanyModal">Dodaj Firme</button>
+        <button type="button" class="btn btn-success float-left" data-toggle="modal" data-target="#addCompanyModal"><i class="fas fa-plus-circle"></i> Dodaj Firmę</button>
+        <ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="(companies | filter:searchcompany).length" ng-model="currentPageCompany" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
       </div>
     </div>
   </div>
@@ -103,6 +112,7 @@
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
+        <input type="text" class="form-control float-left" placeholder="Szukaj..." ng-model="searchshipping">
         <table class="table">
           <thead>
             <tr>
@@ -111,10 +121,11 @@
               <th>Adres</th>
               <th>Kod Pocztowy</th>
               <th>Miasto</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in shippings track by $index">
+            <tr ng-repeat="item in shippings | filter:searchshipping | startFrom:currentPageShipping:perPage">
               <td class="text-left">{{item.name}}</td>
               <td class="text-left">{{item.data}}</td>
               <td class="text-left">{{item.adress}}</td>
@@ -122,10 +133,17 @@
               <td>
                 {{item.city}}
               </td>
+              <td>
+                <div class="btn-group float-right">
+                <button ng-click="removeShippingFunction(item)" class="btn btn-sm btn-danger"><i class="fas fa-minus-circle"></i></button>
+                <button ng-click="" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+              </div>
+              </td>
             </tr>
           </tbody>
         </table>
-        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addShippingModal">Dodaj Adres Dostawy</button>
+        <button type="button" class="btn btn-success float-left" data-toggle="modal" data-target="#addShippingModal"><i class="fas fa-plus-circle"></i> Dodaj Adres Dostawy</button>
+        <ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="(shippings | filter:searchshipping).length" ng-model="currentPageShipping" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
       </div>
     </div>
   </div>
@@ -184,6 +202,30 @@
         <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="addCompanyFunction()" class="btn btn-success">Dodaj Firmę</button></div></div></div>
         </form>
     </div>
+
+    <div class="modal fade" id="editCompanyModal"><div class="modal-dialog">
+      <div class="modal-content" ng-controller="appController">
+        <div class="modal-header"><h4 class="modal-title">Edytuj Firmę</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-body">
+      <form name="company">
+              <div class="row">
+                  <div class="col-lg-12">
+                    <label style="float: left;" for="inputCompanyName"><b>Nazwa Firmy:</b></label>
+                    <input type="text" id="inputCompanyName" class="form-control" required autofocus ng-model="editCompany.name" autofocus/>
+                    <label style="float: left;" for="inputCompanyNip"><b>NIP:</b></label>
+                    <input id="inputCompanyNip" type="text" class="form-control" required ng-model="editCompany.nip"/>
+                    <label style="float: left;" for="inputCompanyAdress"><b>Adres:</b></label>
+                    <input id="inputCompanyAdress" type="text" class="form-control" required ng-model="editCompany.adress"/>
+                    <label style="float: left;" for="inputCompanyPostalcode"><b>Kod Pocztowy:</b></label>
+                    <input id="inputCompanyPostalcode" type="text" class="form-control" required ng-model="editCompany.postalcode"/>
+                    <label style="float: left;" for="inputCompanyCity"><b>Miasto:</b></label>
+                    <input id="inputCompanyCity" type="text" class="form-control" required ng-model="editCompany.city"/>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="addCompanyFunction()" class="btn btn-success">Edytuj Firmę</button></div></div></div>
+          </form>
+      </div>
 
     <div class="modal fade" id="addShippingModal"><div class="modal-dialog">
       <div class="modal-content" ng-controller="addShippingController">

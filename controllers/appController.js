@@ -134,6 +134,55 @@ angular.module('myShop')
 	}
 })
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
+	$scope.editCompanyFunction = function (item) {
+			$scope.editCompany = item;
+	}
+	$scope.removeShippingFunction = function(item) {
+	$http({
+			method: 'post',
+			url: './php/removeShipping.php',
+			data: {
+			account_id: $rootScope.user[0].account_id,
+			shipping_adress_id: item.shipping_adress_id,
+			},
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	})
+	.then(function successCallback(data){
+		$scope.addShippingResponse = data.data;
+		 if($scope.addShippingResponse === 'Success'){
+			 swal ( "Udało się!",  "Adres dostawy został usunięty.",  "success" )
+			 $rootScope.getShippingAdresses();
+			 return;
+		 }
+		 else {
+			 swal ( "Oops",  "Something went wrong! Try again.",  "error" )
+			 return;
+		 }
+	})
+}
+$scope.removeCompanyFunction = function(item) {
+$http({
+		method: 'post',
+		url: './php/removeCompany.php',
+		data: {
+		account_id: $rootScope.user[0].account_id,
+		company_id: item.company_id,
+		},
+		headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+})
+.then(function successCallback(data){
+	$scope.addShippingResponse = data.data;
+	 if($scope.addShippingResponse === 'Success'){
+		 swal ( "Udało się!",  "Firma została usunięta.",  "success" )
+		 $rootScope.getCompanies();
+		 return;
+	 }
+	 else {
+		 swal ( "Oops",  "Something went wrong! Try again.",  "error" )
+		 return;
+	 }
+})
+}
 	$scope.shipping = {shipping_adress_id : null, name: null, data: null, adress: null, postalcode: null, city: null}
 	$rootScope.getShippingAdresses = function (){
 		$http({
@@ -172,6 +221,8 @@ angular.module('myShop')
 		 $scope.totalItems = $scope.products.length;
 	 }, 1000 );
 
+	$scope.currentPageCompany = 1;
+	$scope.currentPageShipping = 1;
   $scope.currentPage = 1;
 	$scope.perPage = 5;
   $scope.maxSize = 3;

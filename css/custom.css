@@ -50,7 +50,7 @@
 .pagination li {
     color: white;
     float: left;
-    padding: 8px 16px;
+    padding: 6px 8px;
     text-decoration: none;
     border-left: none !important;
     border: 1px solid #000;
@@ -70,4 +70,13 @@
 .pagination li:hover:not(.active) {background-color: #ddd;}
 .pagination li:first-child {
   border-left: 1px solid black !important;
+}
+.footer {
+    padding-left: 20px;
+    padding-right: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
 }

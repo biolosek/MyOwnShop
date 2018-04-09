@@ -59,23 +59,33 @@
           </ul>
         </div>
         <div class="btn-group float-right" ng-show="!authenticated">
-          <button class="btn btn-success modal-login" data-toggle="modal" href="#loginModal">Zaloguj się</button>
+          <button class="btn btn-success modal-login" data-toggle="modal" href="#loginModal"><i class="fas fa-sign-in-alt"></i> Zaloguj się</button>
           <button class="btn btn-warning modal-register" data-toggle="modal" href="#registerModal">Rejestracja</button>
           <button class="btn btn-outline-danger">Nie pamiętasz hasła ?</button>
         </div>
         <div ng-show="authenticated" class="float-right">
         <div class="btn-group">
           <a ng-href="#!profile" class="btn btn-success">Mój profil</a>
-          <a class="btn btn-outline-danger" ng-href="#" ng-click="logout()">Wyloguj się</a>
+          <a class="btn btn-outline-danger" ng-href="#" ng-click="logout()"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a>
         </div>
         <a ng-href="#!admin"><button class="btn btn-default" ng-show="$root.user[0].role > 0">Administracja</button></a>
       </div>
       </nav>
     </div>
-    <div class="container">
+    <div class="container" style="margin-bottom: 140px;">
       <div ng-view></div>
     </div>
-      <informations></informations><cart-summary></cart-summary>
+      <cart-summary></cart-summary>
+      <footer class="footer bg-primary">
+        <div class="float-left">
+        <button type="button" class="btn btn-sm btn-info" data-html="true" data-trigger="focus"  data-toggle="popover" data-placement="bottom" title="Legenda Formularzy" data-content='Pola oznaczone <span class="redstar"><b>*</b></span> są wymagane.</br>
+           Jedno z pól oznaczonych <span class="yellowstar"><b>*</b></span> jest wymagane.</br>
+           Pola oznaczone <span class="greenstar"><b>*</b></span> są opcjonalne.'>Legenda Formularzy</button>
+         </div>
+         <div class="float-right" style="color: white;">
+           &copy; Copyrights 2018 : <a href="#">SupremeDEV</a>
+         </div>
+    </footer>
   </body>
 
   <div class="modal fade" id="registerModal">
@@ -120,7 +130,8 @@
                   </select></br>
                 </div>
                 <div class="col-lg-12">
-                  <button type="button" class="btn btn-sm btn-info" data-html="true" data-trigger="focus"  data-toggle="popover" data-placement="bottom" title="Legenda Formularzy" data-content='Pola oznaczone <span class="redstar"><b>*</b></span> są wymagane.</br>
+                  <button type="button" class="btn btn-sm btn-info" data-html="true" data-trigger="focus"  data-toggle="popover" data-placement="bottom" title="Legenda Formularzy" data-content='
+                    Pola oznaczone <span class="redstar"><b>*</b></span> są wymagane.</br>
                      Jedno z pól oznaczonych <span class="yellowstar"><b>*</b></span> jest wymagane.</br>
                      Pola oznaczone <span class="greenstar"><b>*</b></span> są opcjonalne.'>Legenda Formularzy</button>
                 </div>
