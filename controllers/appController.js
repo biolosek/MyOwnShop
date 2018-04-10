@@ -140,6 +140,10 @@ angular.module('myShop')
 	}
 })
 .controller('productViewController', function($scope, $routeParams, $http) {
+	$scope.myInterval = 5000;
+	$scope.noWrapSlides = false;
+	$scope.active = 0;
+	var currIndex = 0;
 	$http({
 			method: 'post',
 			url: './php/getSingleProduct.php',
@@ -150,6 +154,12 @@ angular.module('myShop')
 	})
 	.then(function successCallback(data){
 		$scope.singleProduct = data.data[0];
+		$scope.myArray = data.data[0].images.split(",");
+		$scope.singleProduct.images = [];
+		angular.forEach($scope.myArray, function(value, key) {
+		  $scope.singleProduct.images.push(value);
+		});
+		console.log($scope.singleProduct.images);
 	})
 })
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
@@ -315,7 +325,7 @@ $http({
 	$scope.currentPageCompany = 1;
 	$scope.currentPageShipping = 1;
   $scope.currentPage = 1;
-	$scope.perPage = 4;
+	$scope.perPage = 8;
   $scope.maxSize = 3;
 
 	$scope.getProductsFunction = function() {
