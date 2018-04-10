@@ -9,7 +9,7 @@ $brands = implode(',', $data['brands']);
 
 if (strlen($categories) != 0 && strlen($brands) == 0) {
   try {
-    $stmt = $dbh->prepare("SELECT * from products WHERE category IN (".$categories.")");
+    $stmt = $dbh->prepare("SELECT products.*, products_categories.name as category_name, brands.name as brand_name from products LEFT JOIN products_categories ON products.category = products_categories.category_id LEFT JOIN brands ON products.brand = brands.brand_id WHERE products.category IN (".$categories.")");
     $stmt->execute();
     } catch (PDOException $e) {
             throw $e;
@@ -24,7 +24,7 @@ if (strlen($categories) != 0 && strlen($brands) == 0) {
 }
 if (strlen($categories) == 0 && strlen($brands) != 0) {
   try {
-    $stmt = $dbh->prepare("SELECT * from products WHERE brand IN (".$brands.")");
+    $stmt = $dbh->prepare("SELECT products.*, products_categories.name as category_name, brands.name as brand_name from products LEFT JOIN products_categories ON products.category = products_categories.category_id LEFT JOIN brands ON products.brand = brands.brand_id WHERE products.brand IN (".$brands.")");
     $stmt->execute();
     } catch (PDOException $e) {
             throw $e;
@@ -40,7 +40,7 @@ if (strlen($categories) == 0 && strlen($brands) != 0) {
 if (strlen($categories) != 0 && strlen($brands) != 0) {
 
   try {
-    $stmt = $dbh->prepare("SELECT * from products WHERE category IN (".$categories.") AND brand IN (".$brands.")");
+    $stmt = $dbh->prepare("SELECT products.*, products_categories.name as category_name, brands.name as brand_name from products LEFT JOIN products_categories ON products.category = products_categories.category_id LEFT JOIN brands ON products.brand = brands.brand_id WHERE products.category IN (".$categories.") AND products.brand IN (".$brands.")");
     $stmt->execute();
     } catch (PDOException $e) {
             throw $e;
@@ -55,7 +55,7 @@ if (strlen($categories) != 0 && strlen($brands) != 0) {
 }
 if (strlen($categories) == 0 && strlen($brands) == 0){
   try {
-    $stmt = $dbh->prepare("SELECT * from products WHERE quantity > 0 AND active = 1");
+    $stmt = $dbh->prepare("SELECT products.*, products_categories.name as category_name, brands.name as brand_name from products LEFT JOIN products_categories ON products.category = products_categories.category_id LEFT JOIN brands ON products.brand = brands.brand_id WHERE products.quantity > 0 AND products.active = 1");
     $stmt->execute();
     } catch (PDOException $e) {
             throw $e;

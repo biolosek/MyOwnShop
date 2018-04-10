@@ -136,7 +136,7 @@
               <td>
                 <div class="btn-group float-right">
                 <button ng-click="removeShippingFunction(item)" class="btn btn-sm btn-danger"><i class="fas fa-minus-circle"></i></button>
-                <button ng-click="" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                <button ng-click="editShippingFunction(item)"  data-toggle="modal" data-target="#editShippingModal" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
               </div>
               </td>
             </tr>
@@ -210,20 +210,20 @@
       <form name="company">
               <div class="row">
                   <div class="col-lg-12">
-                    <label style="float: left;" for="inputCompanyName"><b>Nazwa Firmy:</b></label>
-                    <input type="text" id="inputCompanyName" class="form-control" required autofocus ng-model="editCompany.name" autofocus/>
-                    <label style="float: left;" for="inputCompanyNip"><b>NIP:</b></label>
-                    <input id="inputCompanyNip" type="text" class="form-control" required ng-model="editCompany.nip"/>
-                    <label style="float: left;" for="inputCompanyAdress"><b>Adres:</b></label>
-                    <input id="inputCompanyAdress" type="text" class="form-control" required ng-model="editCompany.adress"/>
-                    <label style="float: left;" for="inputCompanyPostalcode"><b>Kod Pocztowy:</b></label>
-                    <input id="inputCompanyPostalcode" type="text" class="form-control" required ng-model="editCompany.postalcode"/>
-                    <label style="float: left;" for="inputCompanyCity"><b>Miasto:</b></label>
-                    <input id="inputCompanyCity" type="text" class="form-control" required ng-model="editCompany.city"/>
+                    <label style="float: left;" for="editCompanyName"><b>Nazwa Firmy:</b></label>
+                    <input type="text" id="editCompanyName" class="form-control" required autofocus ng-model="editCompany.name" autofocus/>
+                    <label style="float: left;" for="editCompanyNip"><b>NIP:</b></label>
+                    <input id="editCompanyNip" type="text" class="form-control" required ng-model="editCompany.nip"/>
+                    <label style="float: left;" for="editCompanyAdress"><b>Adres:</b></label>
+                    <input id="editCompanyAdress" type="text" class="form-control" required ng-model="editCompany.adress"/>
+                    <label style="float: left;" for="editCompanyPostalcode"><b>Kod Pocztowy:</b></label>
+                    <input id="editCompanyPostalcode" type="text" class="form-control" required ng-model="editCompany.postalcode"/>
+                    <label style="float: left;" for="editCompanyCity"><b>Miasto:</b></label>
+                    <input id="editCompanyCity" type="text" class="form-control" required ng-model="editCompany.city"/>
                   </div>
               </div>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="addCompanyFunction()" class="btn btn-success">Edytuj Firmę</button></div></div></div>
+          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="confirmEditCompany()" class="btn btn-success">Edytuj Firmę</button></div></div></div>
           </form>
       </div>
 
@@ -247,6 +247,30 @@
                   </div>
               </div>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="addShippingFunction()" class="btn btn-success">Dodaj Firmę</button></div></div></div>
+          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="addShippingFunction()" class="btn btn-success">Dodaj Adres Dostawy</button></div></div></div>
           </form>
       </div>
+
+      <div class="modal fade" id="editShippingModal"><div class="modal-dialog">
+        <div class="modal-content" ng-controller="appController">
+          <div class="modal-header"><h4 class="modal-title">Edytuj adres dostawy:</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+          <div class="modal-body">
+        <form name="shipping">
+                <div class="row">
+                    <div class="col-lg-12">
+                      <label style="float: left;" for="editShippingName"><b>Nazwa:</b></label>
+                      <input type="text" id="editShippingName" class="form-control" required autofocus ng-model="editShipping.name" autofocus/>
+                      <label style="float: left;" for="editShippingData"><b>Imię i Nazwisko:</b></label>
+                      <input id="editShippingData" type="text" class="form-control" required ng-model="editShipping.data"/>
+                      <label style="float: left;" for="editShippingAdress"><b>Adres:</b></label>
+                      <input id="editShippingAdress" type="text" class="form-control" required ng-model="editShipping.adress"/>
+                      <label style="float: left;" for="editShippingPostalcode"><b>Kod Pocztowy:</b></label>
+                      <input id="editShippingPostalcode" type="text" class="form-control" required ng-model="editShipping.postalcode"/>
+                      <label style="float: left;" for="editShippingCity"><b>Miasto:</b></label>
+                      <input id="edittShippingCity" type="text" class="form-control" required ng-model="editShipping.city"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="confirmEditShipping()" class="btn btn-success">Edytuj Adres Dostawy</button></div></div></div>
+            </form>
+        </div>

@@ -27,10 +27,12 @@ angular.module('myShop')
      }
      if($scope.addCompanyResponse === 'Duplicate nip entry'){
        swal ( "Upsss",  "Firma o tym numerze NIP już istnieje.",  "error" )
+       $rootScope.getCompanies();
        return;
      }
      else {
        swal ( "Oops",  "Something went wrong! Try again.",  "error" )
+       $rootScope.getCompanies();
        return;
      }
   })

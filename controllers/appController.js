@@ -73,6 +73,7 @@ angular.module('myShop')
   $rootScope.user = $cookieStore.get('user');
 	$rootScope.companies = $cookieStore.get('companies');
 	$rootScope.shippings = $cookieStore.get('shippings');
+	$rootScope.productView = $cookieStore.get('productView');
 
   $rootScope.getUserInfo = function() {
   $http({
@@ -127,15 +128,105 @@ angular.module('myShop')
   $routeProvider.otherwise({
     templateUrl: "./views/app.html"
   });
+
+	$routeProvider.when("/product/:product_id", {
+		templateUrl: "./views/productDetails.html",
+		controller: 'productViewController'
+	});
 })
 .filter('startFrom', function() {
 	return function(input, currentPage, perPage) {
 		return input.slice((currentPage-1) * perPage, perPage * currentPage);
 	}
 })
+.controller('productViewController', function($scope, $routeParams, $http) {
+	$http({
+			method: 'post',
+			url: './php/getSingleProduct.php',
+			data: {
+			product_id: $routeParams.product_id,
+			},
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	})
+	.then(function successCallback(data){
+		$scope.singleProduct = data.data[0];
+	})
+})
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
 	$scope.editCompanyFunction = function (item) {
 			$scope.editCompany = item;
+	}
+	$scope.confirmEditCompany = function () {
+		$http({
+				method: 'post',
+				url: './php/editCompany.php',
+				data: {
+				company_id: $scope.editCompany.company_id,
+				name: $scope.editCompany.name,
+				nip: $scope.editCompany.nip,
+				adress: $scope.editCompany.adress,
+				postalcode: $scope.editCompany.postalcode,
+				city: $scope.editCompany.city,
+				account_id: $rootScope.user[0].account_id,
+				},
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		})
+		.then(function successCallback(data){
+			$scope.editCompanyResponse = data.data;
+			 if($scope.editCompanyResponse === 'Success'){
+				 swal ( "Udało się!",  "Firma została zmieniona.",  "success" )
+				 $rootScope.getCompanies();
+				 $(function () {
+	         $('#editCompanyModal').modal('toggle');
+	       });
+				 return;
+			 }
+			 if($scope.editCompanyResponse === "Duplicate nip entry") {
+				 swal ( "Oops",  "Firma o tym numerze nip już istnieje.",  "error" )
+				 $rootScope.getCompanies();
+				 return;
+			 }
+			 else {
+				 swal ( "Oops",  "Something went wrong! Try again.",  "error" )
+				 $rootScope.getCompanies();
+				 return;
+			 }
+		})
+	}
+	$scope.editShippingFunction = function (item) {
+			$scope.editShipping = item;
+	}
+	$scope.confirmEditShipping = function () {
+		$http({
+				method: 'post',
+				url: './php/editShipping.php',
+				data: {
+				shipping_adress_id: $scope.editShipping.shipping_adress_id,
+				name: $scope.editShipping.name,
+				data: $scope.editShipping.data,
+				adress: $scope.editShipping.adress,
+				postalcode: $scope.editShipping.postalcode,
+				city: $scope.editShipping.city,
+				account_id: $rootScope.user[0].account_id,
+				},
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		})
+		.then(function successCallback(data){
+			$scope.editShippingResponse = data.data;
+			 if($scope.editShippingResponse === 'Success'){
+				 swal ( "Udało się!",  "Adres dostawy został zmieniony.",  "success" )
+				 $rootScope.getShippingAdresses();
+				 $(function () {
+	         $('#editShippingModal').modal('toggle');
+	       });
+				 return;
+			 }
+			 else {
+				 swal ( "Oops",  "Something went wrong! Try again.",  "error" )
+				 $rootScope.getShippingAdresses();
+				 return;
+			 }
+		})
 	}
 	$scope.removeShippingFunction = function(item) {
 	$http({
@@ -148,8 +239,8 @@ angular.module('myShop')
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 	})
 	.then(function successCallback(data){
-		$scope.addShippingResponse = data.data;
-		 if($scope.addShippingResponse === 'Success'){
+		$scope.removeShippingResponse = data.data;
+		 if($scope.removeShippingResponse === 'Success'){
 			 swal ( "Udało się!",  "Adres dostawy został usunięty.",  "success" )
 			 $rootScope.getShippingAdresses();
 			 return;
@@ -171,8 +262,8 @@ $http({
 		headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 })
 .then(function successCallback(data){
-	$scope.addShippingResponse = data.data;
-	 if($scope.addShippingResponse === 'Success'){
+	$scope.removeCompanyResponse = data.data;
+	 if($scope.removeCompanyResponse === 'Success'){
 		 swal ( "Udało się!",  "Firma została usunięta.",  "success" )
 		 $rootScope.getCompanies();
 		 return;
@@ -224,7 +315,7 @@ $http({
 	$scope.currentPageCompany = 1;
 	$scope.currentPageShipping = 1;
   $scope.currentPage = 1;
-	$scope.perPage = 5;
+	$scope.perPage = 4;
   $scope.maxSize = 3;
 
 	$scope.getProductsFunction = function() {

@@ -46,21 +46,37 @@
 </div>
   <div class="col-lg-9">
     <div class="insider">
-    <div class="well" style="padding:20px; border: 1px solid black;" ng-repeat="item in products | filter:search | startFrom:currentPage:perPage">
-  <h4>
-    <strong>{{item.name}}</strong>
-    <span class="float-right badge badge-info">
-      {{item.price | currency}}
-    </span>
-  </h4>
-  <button ng-click="getProductsOnAdd(item);" class="btn btn-success float-right">Dodaj do koszyka</button>
-  <span class="lead">{{item.description}}</span>
+      <div class="row">
+        <div class="col-lg-3 text-center" ng-repeat="item in products | filter:search | startFrom:currentPage:perPage">
+          <div class="insider">
+      <img style="max-width: 100%; height: auto;" src="{{item.main_img}}"/>
+    <strong><a href="#!product/{{item.product_id}}">{{item.name}}</a></strong></br>
+          <h5><span class="badge badge-info">{{item.price | currency}}</span></h5>
+  <button ng-click="getProductsOnAdd(item);" class="btn btn-sm btn-success">Dodaj do koszyka</button></br>
+  <span style="font-size: 12px;">Kategoria: {{item.category_name}}</span></br>
+  <span style="font-size: 12px;">Marka: {{item.brand_name}}</span>
+</div></br>
   </div>
+</div>
+
   <div class="alert alert-warning" ng-show="products.length == 0">
     We didn't find any result with this criteria.
     <a ng-click="getProductsFunction()" class="alert-link">Click here to reset filters.</a>
   </div>
 </div></br>
-<ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="(products | filter:search).length" ng-model="currentPage" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+<div class="row">
+  <div class="col col-lg-2">
+<select class="form-control" ng-model="perPage">
+  <option disabled ng-value=4>Produktów na strone...</option>
+   <option value=4 selected>4</option>
+   <option value=8>8</option>
+   <option value=16>16</option>
+   <option value=32>32</option>
+   <option value=64>64</option>
+ </select>
+</div>
+ <div class="col col-lg-10">
+ <ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="(products | filter:search).length" ng-model="currentPage" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+</div>
 </div>
 </div>

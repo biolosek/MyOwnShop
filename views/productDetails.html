@@ -1,0 +1,21 @@
+<div class="row" style="margin-top: 10px; border: 1px solid black; padding-top: 10px; padding-bottom: 10px;">
+  <div class="col col-lg-3">
+    <div class="insider">
+    {{singleProduct.name}}
+    </div>
+  </div>
+  <div class="col col-lg-3">
+    <div class="insider">
+    {{singleProduct.brand_name}}
+    {{singleProduct.category_name}}
+    </div>
+  </div>
+  <div class="col col-lg-6">
+    <div class="insider">
+    {{singleProduct.price | currency}}
+  </div>
+  </div>
+  <div class="col col-lg-12" style="padding-top: 10px;">
+  <button ng-click="getProductsOnAdd(singleProduct);" class="btn btn-success float-right">Dodaj do koszyka</button>
+</div>
+</div>

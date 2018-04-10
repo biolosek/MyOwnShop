@@ -27,6 +27,7 @@ angular.module('myShop')
      }
      else {
        swal ( "Oops",  "Something went wrong! Try again.",  "error" )
+        $rootScope.getShippingAdresses();
        return;
      }
   })
