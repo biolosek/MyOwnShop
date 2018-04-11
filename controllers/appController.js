@@ -163,6 +163,46 @@ angular.module('myShop')
 	})
 })
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
+	$scope.company = {company_id : null, name: null, nip: null, adress: null, postalcode: null, city: null}
+	$scope.shipping = {shipping_adress_id : null, name: null, data: null, adress: null, postalcode: null, city: null};
+	$scope.shippingId = null;
+	$scope.$watch('shippingId', function() {
+		if ($scope.shippingId != null) {
+			console.log('dupa');
+			$scope.shipping = $scope.shippings[$scope.shippingId];
+		$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
+		shiping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+		}
+	})
+		$scope.placeOrderFunction = function(form) {
+	$http({
+		method: "post",
+		url: './php/placeOrder.php',
+		data: {
+				invoice_name: $scope.orderData.invoice_name,
+				invoice_company_name: $scope.orderData.invoice_company_name,
+				invoice_nip: $scope.orderData.invoice_nip,
+				invoice_adress: $scope.orderData.invoice_adress,
+				invoice_postalcode: $scope.orderData.invoice_postalcode,
+				invoice_city: $scope.orderData.invoice_city,
+				shipping_name: $scope.orderData.shipping_name,
+				shipping_adress: $scope.orderData.shipping_adress,
+				shipping_postalcode: $scope.orderData.shipping_postalcode,
+				shipping_city: $scope.orderData.shipping_city,
+				user_company: $scope.orderData.user_company,
+				user_shipping: $scope.orderData.user_shipping,
+				total: $scope.total(),
+				payment_status: 'pending',
+				shippment_status: 'pending',
+				cartdata: cartData,
+		},
+		headers: { 'Content-Type': 'application/json' }
+	}).then(function successCallback(data) {
+					$scope.placeOrderResponse = data.data;
+					console.log($scope.placeOrderResponse);
+				})
+		}
+
 	$scope.editCompanyFunction = function (item) {
 			$scope.editCompany = item;
 	}
@@ -284,7 +324,6 @@ $http({
 	 }
 })
 }
-	$scope.shipping = {shipping_adress_id : null, name: null, data: null, adress: null, postalcode: null, city: null}
 	$rootScope.getShippingAdresses = function (){
 		$http({
 				method: 'post',
@@ -300,7 +339,6 @@ $http({
 			$cookieStore.put('shippings', $rootScope.shippings);
 		})
 	}
-	$scope.company = {company_id : null, name: null, nip: null, adress: null, postalcode: null, city: null}
 	$rootScope.getCompanies = function (){
 		$http({
 				method: 'post',
@@ -408,18 +446,6 @@ $http({
 		}
 
 	  })
-	}
-	$scope.placeOrderFunction = function() {
-	$http({
-			method: 'post',
-			url: './php/placeOrder.php',
-			data : {
-				cartdata : $scope.cartData,
-			},
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-	})
-	.then(function successCallback(response) {
-		})
 	}
   $scope.getCountries = function() {
   $http({

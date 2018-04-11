@@ -14,29 +14,37 @@
     </form>
    <form ng-show="form == 0 && form != 1">
      <label for="firstname"><span class="redstar">*</span> Imię i Nazwisko:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.firstname" ng-value="$root.user[0].firstname + ' ' + $root.user[0].lastname">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_name" ng-value="$root.user[0].firstname + ' ' + $root.user[0].lastname">
      <label for="firstname"><span class="redstar">*</span> Adres:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.adress" ng-value="$root.user[0].adress">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_adress" ng-value="$root.user[0].adress">
      <label for="firstname"><span class="redstar">*</span> Kod Pocztowy:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.postalcode" ng-value="$root.user[0].postalcode">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_postalcode" ng-value="$root.user[0].postalcode">
      <label for="firstname"><span class="redstar">*</span> Miasto:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.city" ng-value="$root.user[0].city">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_city" ng-value="$root.user[0].city">
    </form>
    <form ng-show="form != 0 && form == 1">
+     <select ng-show="authenticated" class="form-control" ng-model="company">
+       <option value='' ng-selected="null">
+         Select Shipping Adress
+       </option>
+       <option ng-repeat="item in companies" value="{{item}}">
+         {{item.name}}
+       </option>
+     </select>
      <label for="firstname"><span class="yellowstar">*</span> Imię i Nazwisko:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.firstname" ng-value="$root.user[0].firstname + ' ' + $root.user[0].lastname">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_name" ng-value="$root.user[0].firstname + ' ' + $root.user[0].lastname">
      <span ng-hide="formPlace.firstname.length > 0 || formPlace.company.length > 0" class="badge badge-warning">Jedno z tych pól musi być uzupełnione.</span>
      <label for="firstname"><span class="yellowstar">*</span> Nazwa Firmy:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.company">
+     <input type="text" name="firstname" class="form-control" ng-model="company.name">
      <span ng-hide="formPlace.firstname.length > 0 || formPlace.company.length > 0" class="badge badge-warning">Jedno z tych pól musi być uzupełnione.</span>
      <label for="firstname"><span class="redstar">*</span> Numer Identyfikacji Podatkowej :</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.nip">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_nip">
      <label for="firstname"><span class="redstar">*</span> Adres:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.adress" ng-value="$root.user[0].adress">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_adress" ng-value="$root.user[0].adress">
      <label for="firstname"><span class="redstar">*</span> Kod Pocztowy:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.postalcode" ng-value="$root.user[0].postalcode">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_postalcode" ng-value="$root.user[0].postalcode">
      <label for="firstname"><span class="redstar">*</span> Miasto:</label>
-     <input type="text" name="firstname" class="form-control" ng-model="formPlace.city" ng-value="$root.user[0].city">
+     <input type="text" name="firstname" class="form-control" ng-model="orderData.invoice_city" ng-value="$root.user[0].city">
    </form>
  </div>
 
@@ -45,33 +53,33 @@
   <div class="insider">
   <h4>Dane do wysyłki:</h4>
   <form>
-    <select ng-show="authenticated" class="form-control" ng-model="shipping_adress" required>
+    <select ng-show="authenticated" class="form-control" ng-model="$parent.shippingId">
       <option value='' ng-selected="null">
         Select Shipping Adress
       </option>
-      <option ng-repeat="item in shippings" ng-value="item">
+      <option ng-repeat="(key, item) in shippings" value="{{key}}">
         {{item.name}}
       </option>
     </select>
     <div ng-show="shipping_adress == null">
     <label for="firstname"><span class="redstar">*</span> Imię i Nazwisko:</label>
-    <input type="text" name="firstname" class="form-control" ng-model="formPlaceSent.firstname" ng-value="$root.user[0].firstname + ' ' + $root.user[0].lastname">
+    <input type="text" name="firstname" class="form-control" ng-model="orderData.shipping_name" ng-value="$root.user[0].firstname + ' ' + $root.user[0].lastname">
     <label for="firstname"><span class="redstar">*</span> Adres:</label>
-    <input type="text" name="firstname" class="form-control" ng-model="formPlace.adress" ng-value="$root.user[0].adress">
+    <input type="text" name="firstname" class="form-control" ng-model="orderData.shipping_adress" ng-value="$root.user[0].adress">
     <label for="firstname"><span class="redstar">*</span> Kod Pocztowy:</label>
-    <input type="text" name="firstname" class="form-control" ng-model="formPlace.postalcode" ng-value="$root.user[0].postalcode">
+    <input type="text" name="firstname" class="form-control" ng-model="orderData.shipping_postalcode" ng-value="$root.user[0].postalcode">
     <label for="firstname"><span class="redstar">*</span> Miasto:</label>
-    <input type="text" name="firstname" class="form-control" ng-model="formPlace.city" ng-value="$root.user[0].city">
+    <input type="text" name="firstname" class="form-control" ng-model="orderData.shipping_city" ng-value="$root.user[0].city">
     </div>
     <div ng-show="shipping_adress != null">
     <label for="firstname"><span class="redstar">*</span> Imię i Nazwisko:</label>
-    <input type="text" name="firstname" class="form-control" ng-model="formPlaceSent.firstname" ng-value="shipping_adress.data">
+    <input type="text" name="firstname" class="form-control" ng-model="orderData.shipping_name" ng-value="shipping_adress.data">
     <label for="firstname"><span class="redstar">*</span> Adres:</label>
-    <input type="text" name="firstname" class="form-control" ng-model="formPlace.adress" ng-value="shipping_adress.adress">
+    <input type="text" name="firstname" class="form-control" ng-model="orderData.shipping_adress" ng-value="shipping_adress.adress">
     <label for="firstname"><span class="redstar">*</span> Kod Pocztowy:</label>
-    <input type="text" name="firstname" class="form-control" ng-model="formPlace.postalcode" ng-value="shipping_adress.postalcode">
+    <input type="text" name="firstname" class="form-control" ng-model="orderData.shipping_postalcode" ng-value="shipping_adress.postalcode">
     <label for="firstname"><span class="redstar">*</span> Miasto:</label>
-    <input type="text" name="firstname" class="form-control" ng-model="formPlace.city" ng-value="shipping_adress.city">
+    <input type="text" name="firstname" class="form-control" ng-model="orderData.shipping_city" ng-value="shipping_adress.city">
     </div>
   </form>
    </div>
@@ -108,7 +116,10 @@
 </div></br>
 <div class="btn-group float-right">
   <a class="btn btn-primary" href="#!products">Kontynuuj zakupy</a>
-  <a class="btn btn-success" ng-click="placeOrderFunction()" href="#!placeorder">Potwierdź zamówienie</a>
+  <a class="btn btn-success" ng-click="placeOrderFunction()">Potwierdź zamówienie</a>
 </div>
 </div>
+  {{orderData}}</br>
+  {{shipping}}</br>
+  {{company}}
 </div>

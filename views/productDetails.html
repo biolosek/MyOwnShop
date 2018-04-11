@@ -12,21 +12,17 @@
   </div>
   <div class="col col-lg-6">
     <div class="insider">
-      <div style="height: 305px">
-          <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-            <div uib-slide ng-repeat="(key, value) in singleProduct.images track by key" index="key">
-              <img src="{{value}}" style="margin:auto;">
-              <div class="carousel-caption" style="color: black !important;">
-                <h4>{{value}}</h4></br>
-                {{key}}</br>
-              </div>
-            </div>
-          </div>
+    <div uib-carousel active="active" active="active" interval="myInterval" no-wrap="noWrapSlides" class="ng-isolate-scope carousel">
+      <div uib-slide ng-repeat="(key, value) in singleProduct.images track by key" index="key">
+        <img ng-src="{{value}}" style="margin:auto;">
+        <div class="carousel-caption">
+          <h4>{{key}}</h4>
         </div>
-  </div>
+      </div>
+    </div>
+</div>
   </div>
   <div class="col col-lg-12" style="padding-top: 10px;">
   <button ng-click="getProductsOnAdd(singleProduct);" class="btn btn-success float-right">Dodaj do koszyka</button>
-  {{singleProduct.images}}
 </div>
 </div>
