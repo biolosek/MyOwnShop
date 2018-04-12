@@ -163,15 +163,38 @@ angular.module('myShop')
 	})
 })
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
+	$scope.invoice_type = 0;
 	$scope.company = {company_id : null, name: null, nip: null, adress: null, postalcode: null, city: null}
 	$scope.shipping = {shipping_adress_id : null, name: null, data: null, adress: null, postalcode: null, city: null};
-	$scope.shippingId = null;
+	$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
+	shipping_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+	$scope.$watch('invoice_type', function () {
+		if ($scope.invoice_type == 0) {
+			$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: null, invoice_nip: null, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
+			shipping_name: $rootScope.user[0].name, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: null, user_shipping: $scope.shipping.shipping_adress_id};
+		}
+		if ($scope.invoice_type == 1) {
+			$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $scope.company.adress, invoice_postalcode: $scope.company.postalcode, invoice_city: $scope.company.city,
+			shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+		}
+	})
 	$scope.$watch('shippingId', function() {
+		if ($scope.shippingId == null || $scope.shippingId == undefined) {
+			$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
+			shipping_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+		}
 		if ($scope.shippingId != null) {
-			console.log('dupa');
-			$scope.shipping = $scope.shippings[$scope.shippingId];
+			$scope.shipping = $rootScope.shippings[$scope.shippingId];
 		$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
-		shiping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+		shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+		}
+	})
+	$scope.companyId = null;
+	$scope.$watch('companyId', function() {
+		if ($scope.companyId != null) {
+			$scope.company = $rootScope.companies[$scope.companyId];
+		$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $scope.company.adress, invoice_postalcode: $scope.company.postalcode, invoice_city:  $scope.company.city,
+		shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
 		}
 	})
 		$scope.placeOrderFunction = function(form) {
@@ -191,15 +214,25 @@ angular.module('myShop')
 				shipping_city: $scope.orderData.shipping_city,
 				user_company: $scope.orderData.user_company,
 				user_shipping: $scope.orderData.user_shipping,
+				account_id: $rootScope.user[0].account_id,
 				total: $scope.total(),
 				payment_status: 'pending',
-				shippment_status: 'pending',
+				shipping_status: 'pending',
 				cartdata: cartData,
 		},
 		headers: { 'Content-Type': 'application/json' }
 	}).then(function successCallback(data) {
 					$scope.placeOrderResponse = data.data;
 					console.log($scope.placeOrderResponse);
+					if ($scope.placeOrderResponse == 'Success') {
+						swal ( "Udało się!",  "Zamówienie zostało złożone.",  "success" )
+						$cookieStore.remove('cartData');
+						return;
+					}
+					else {
+						swal ( "Oops",  "Coś poszło nie tak, spróbuj ponownie.",  "error" )
+						return;
+					}
 				})
 		}
 

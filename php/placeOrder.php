@@ -4,8 +4,8 @@ include_once 'config.php';
 $data = file_get_contents("php://input");
 $data = json_decode($data, true);
 
-print_r($data);
-exit;
+// print_r($data);
+// exit;
 
 try {
     $stmt = $dbh->prepare("INSERT INTO `orders` (`order_id`, `invoice_name`, `invoice_company_name`, `invoice_nip`, `invoice_adress`, `invoice_postalcode`, `invoice_city`, `shipping_name`, `shipping_adress`, `shipping_postalcode`,
@@ -30,6 +30,29 @@ try {
     $stmt->execute();
   } catch (PDOException $e) {
           throw $e;
+  }
+try {
+    $stmt = $dbh->prepare("SELECT MAX(order_id) as order_id FROM orders");
+    $stmt->execute();
+  } catch (PDOException $e) {
+    throw $e;
+  }
+
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  foreach ($data['cartdata'] as $rows) {
+    try{
+      $stmt = $dbh->prepare("INSERT INTO `orders_products` (`order_product_id`, `product_id`, `quantity`, `price`, `price_total`, `order_id`)
+      VALUES(NULL, :product_id, :quantity, :price, (:price * :quantity), :order_id)");
+      $stmt->bindValue(':product_id', $rows['product_id']);
+      $stmt->bindValue(':quantity', $rows['count']);
+      $stmt->bindValue(':price', $rows['price']);
+      $stmt->bindValue(':order_id', $result[0]['order_id']);
+      $stmt->execute();
+    }
+    catch (PDOException $e) {
+            throw $e;
+    }
   }
   echo 'Success';
 

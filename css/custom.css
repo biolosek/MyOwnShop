@@ -44,7 +44,7 @@
 .well {
   margin-top: 10px;
 }
-.pagination {
+/* .pagination {
     display: inline-block;
 }
 .pagination li {
@@ -69,6 +69,22 @@
 
 .pagination li:hover:not(.active) {background-color: #ddd;}
 .pagination li:first-child {
+  border-left: 1px solid black !important;
+} */
+.page-link {
+  background: none !important;
+  color: black !important;
+  border: none !important;
+}
+.page-item {
+  border-left: none !important;
+  border: 1px solid #000;
+}
+.page-item.active .page-link {
+    background-color: #18BC9C !important;
+    color: white !important;
+}
+.page-item:first-child {
   border-left: 1px solid black !important;
 }
 .footer {
