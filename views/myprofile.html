@@ -42,7 +42,7 @@
   </div>
   <div  class="col col-lg-8" style="padding: 10px;">
     <div id="accordion">
-  <div class="card">
+  <div class="card" contorller="ordersController">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
         <button class="btn btn-block" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -51,9 +51,37 @@
       </h5>
     </div>
 
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="collapseOne" ng-controller="ordersController" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        <input type="text" class="form-control float-left" placeholder="Szukaj..." ng-model="searchorder">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Data</th>
+              <th>Płatność</th>
+              <th>Realizacja</th>
+              <th>Kwota</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in $root.userOrders | filter:searchorder">
+              <td class="text-left">#{{item.order_id}}</td>
+              <td class="text-left">{{item.date_placed | dateOnly}}</td>
+              <td class="text-left">{{item.payment_status}}</td>
+              <td class="text-left">{{item.shipping_status}}</td>
+              <td class="text-left">{{item.total}}</td>
+              <td>
+                <div class="btn-group float-right">
+                <button ng-click="checkOrderFunction(item)" data-toggle="modal" data-target="#checkOrderModal" class="btn btn-sm btn-info"><i class="fas fa-search"></i></button>
+                <button ng-click="editShippingFunction(item)"  data-toggle="modal" data-target="#editShippingModal" class="btn btn-sm btn-success"><i class="fas fa-download"></i></button>
+              </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="($root.userOrders | filter:searchcompany).length" ng-model="currentPageOrders" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
       </div>
     </div>
   </div>
@@ -223,7 +251,7 @@
                   </div>
               </div>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="confirmEditCompany()" class="btn btn-success">Edytuj Firmę</button></div></div></div>
+          <div class="modal-footer"><button type="button" class="btn btn-danger" ng-click="cancelEditCompany()">Zamknij</button><button type="submit" ng-click="confirmEditCompany()" class="btn btn-success">Edytuj Firmę</button></div></div></div>
           </form>
       </div>
 
@@ -271,6 +299,37 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="confirmEditShipping()" class="btn btn-success">Edytuj Adres Dostawy</button></div></div></div>
+            <div class="modal-footer"><button type="button" class="btn btn-danger" ng-click="cancelEditShipping()">Zamknij</button><button type="submit" ng-click="confirmEditShipping()" class="btn btn-success">Edytuj Adres Dostawy</button></div></div></div>
             </form>
         </div>
+
+        <div class="modal fade" id="checkOrderModal"><div class="modal-dialog">
+          <div class="modal-content" ng-controller="ordersController">
+            <div class="modal-header"><h4 class="modal-title">Numer zamówienia: #{{orderInfo.order_id}}</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+            <div class="modal-body">
+                  <div class="row">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Ilość</th>
+                          <th>Produkt</th>
+                          <th>Cena</th>
+                          <th>Suma</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="item in $root.orderProducts">
+                          <td class="text-left">{{item.quantity}}</td>
+                          <td class="text-left">{{item.product_name}}</td>
+                          <td class="text-left">{{item.price}}</td>
+                          <td class="text-left">{{item.price_total}}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <td colspan="4" class="text-right">Kwota zamówienia : {{orderInfo.total}}</td>
+                      </tfoot>
+                    </table>
+                  </div>
+              </div>
+              <div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-danger">Zamknij</button><button type="submit" ng-click="confirmEditShipping()" class="btn btn-success">Edytuj Adres Dostawy</button></div></div></div>
+          </div>

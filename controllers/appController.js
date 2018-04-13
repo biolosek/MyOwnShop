@@ -74,6 +74,7 @@ angular.module('myShop')
 	$rootScope.companies = $cookieStore.get('companies');
 	$rootScope.shippings = $cookieStore.get('shippings');
 	$rootScope.productView = $cookieStore.get('productView');
+	$rootScope.userOrders = $cookieStore.get('orders');
 
   $rootScope.getUserInfo = function() {
   $http({
@@ -139,6 +140,11 @@ angular.module('myShop')
 		return input.slice((currentPage-1) * perPage, perPage * currentPage);
 	}
 })
+.filter("dateOnly", function(){
+		return function(input){
+				return input.split(' ')[0]; // you can filter your datetime object here as required.
+		};
+})
 .controller('productViewController', function($scope, $routeParams, $http) {
 	$scope.myInterval = 5000;
 	$scope.noWrapSlides = false;
@@ -154,39 +160,52 @@ angular.module('myShop')
 	})
 	.then(function successCallback(data){
 		$scope.singleProduct = data.data[0];
+		if (data.data[0].images != null){
 		$scope.myArray = data.data[0].images.split(",");
+		}
 		$scope.singleProduct.images = [];
 		angular.forEach($scope.myArray, function(value, key) {
 		  $scope.singleProduct.images.push(value);
 		});
-		console.log($scope.singleProduct.images);
 	})
 })
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
 	$scope.invoice_type = 0;
 	$scope.company = {company_id : null, name: null, nip: null, adress: null, postalcode: null, city: null}
 	$scope.shipping = {shipping_adress_id : null, name: null, data: null, adress: null, postalcode: null, city: null};
-	$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
-	shipping_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+	$scope.orderData = {invoice_name: null, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: null, invoice_postalcode: null, invoice_city: null,
+	shipping_name: null, shipping_adress: null, shipping_postalcode: null, shipping_city: null, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: null};
 	$scope.$watch('invoice_type', function () {
-		if ($scope.invoice_type == 0) {
-			$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: null, invoice_nip: null, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
-			shipping_name: $rootScope.user[0].name, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: null, user_shipping: $scope.shipping.shipping_adress_id};
+		if ($scope.invoice_type == 0 && $rootScope.authenticated == 0) {
+			$scope.orderData = {invoice_name: null, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: null, invoice_postalcode: null, invoice_city: null,
+			shipping_name: null, shipping_adress: null, shipping_postalcode: null, shipping_city: null, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: null};
 		}
-		if ($scope.invoice_type == 1) {
+		if ($scope.invoice_type == 0 && $rootScope.authenticated == 1) {
+			$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: null, invoice_nip: null, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
+			shipping_name: $rootScope.user[0].name, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: null, user_shipping: $scope.shipping.shipping_adress_id, account_id: $rootScope.user[0].account_id};
+		}
+		if ($scope.invoice_type == 1 && $rootScope.authenticated == 0) {
+			$scope.orderData = {invoice_name: null, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: null, invoice_postalcode: null, invoice_city: null,
+			shipping_name: null, shipping_adress: null, shipping_postalcode: null, shipping_city: null, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: null};
+		}
+		if ($scope.invoice_type == 1 && $rootScope.authenticated == 1) {
 			$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $scope.company.adress, invoice_postalcode: $scope.company.postalcode, invoice_city: $scope.company.city,
-			shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+			shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: $rootScope.user[0].account_id};
 		}
 	})
 	$scope.$watch('shippingId', function() {
-		if ($scope.shippingId == null || $scope.shippingId == undefined) {
+		if ($scope.shippingId == null && $rootScope.authenticated == 0 || $scope.shippingId == undefined && $rootScope.authenticated == 0) {
+			$scope.orderData = {invoice_name: null, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: null, invoice_postalcode: null, invoice_city: null,
+			shipping_name: null, shipping_adress: null, shipping_postalcode: null, shipping_city: null, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: null};
+		}
+		if ($scope.shippingId == null && $rootScope.authenticated == 1 || $scope.shippingId == undefined && $rootScope.authenticated == 1) {
 			$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
-			shipping_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+			shipping_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: $rootScope.user[0].account_id};
 		}
 		if ($scope.shippingId != null) {
 			$scope.shipping = $rootScope.shippings[$scope.shippingId];
 		$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
-		shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+		shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: $rootScope.user[0].account_id};
 		}
 	})
 	$scope.companyId = null;
@@ -194,7 +213,7 @@ angular.module('myShop')
 		if ($scope.companyId != null) {
 			$scope.company = $rootScope.companies[$scope.companyId];
 		$scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $scope.company.adress, invoice_postalcode: $scope.company.postalcode, invoice_city:  $scope.company.city,
-		shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id};
+		shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: $rootScope.user[0].account_id};
 		}
 	})
 		$scope.placeOrderFunction = function(form) {
@@ -214,7 +233,7 @@ angular.module('myShop')
 				shipping_city: $scope.orderData.shipping_city,
 				user_company: $scope.orderData.user_company,
 				user_shipping: $scope.orderData.user_shipping,
-				account_id: $rootScope.user[0].account_id,
+				account_id: $scope.orderData.account_id,
 				total: $scope.total(),
 				payment_status: 'pending',
 				shipping_status: 'pending',
@@ -223,7 +242,6 @@ angular.module('myShop')
 		headers: { 'Content-Type': 'application/json' }
 	}).then(function successCallback(data) {
 					$scope.placeOrderResponse = data.data;
-					console.log($scope.placeOrderResponse);
 					if ($scope.placeOrderResponse == 'Success') {
 						swal ( "Udało się!",  "Zamówienie zostało złożone.",  "success" )
 						$cookieStore.remove('cartData');
@@ -238,6 +256,12 @@ angular.module('myShop')
 
 	$scope.editCompanyFunction = function (item) {
 			$scope.editCompany = item;
+	}
+	$scope.cancelEditCompany = function () {
+		$(function () {
+			$('#editCompanyModal').modal('toggle');
+		});
+		$rootScope.getCompanies();
 	}
 	$scope.confirmEditCompany = function () {
 		$http({
@@ -278,6 +302,12 @@ angular.module('myShop')
 	}
 	$scope.editShippingFunction = function (item) {
 			$scope.editShipping = item;
+	}
+	$scope.cancelEditShipping = function () {
+		$(function () {
+			$('#editShippingModal').modal('toggle');
+		});
+		$rootScope.getShippingAdresses();
 	}
 	$scope.confirmEditShipping = function () {
 		$http({

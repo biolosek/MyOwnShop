@@ -9,8 +9,8 @@ $data = json_decode($data, true);
 
 try {
     $stmt = $dbh->prepare("INSERT INTO `orders` (`order_id`, `invoice_name`, `invoice_company_name`, `invoice_nip`, `invoice_adress`, `invoice_postalcode`, `invoice_city`, `shipping_name`, `shipping_adress`, `shipping_postalcode`,
-      `shipping_city`, `user_company`, `user_shipping`, `account_id`, `total`, `payment_status`, `shipping_status`)
-      VALUES (NULL, :invoice_name, :invoice_company_name, :invoice_nip, :invoice_adress, :invoice_postalcode, :invoice_city, :shipping_name, :shipping_adress, :shipping_postalcode, :shipping_city, :user_company, :user_shipping, :account_id, :total, :payment_status, :shipping_status)");
+      `shipping_city`, `user_company`, `user_shipping`, `account_id`, `total`, `payment_status`, `shipping_status`, `date_placed`)
+      VALUES (NULL, :invoice_name, :invoice_company_name, :invoice_nip, :invoice_adress, :invoice_postalcode, :invoice_city, :shipping_name, :shipping_adress, :shipping_postalcode, :shipping_city, :user_company, :user_shipping, :account_id, :total, :payment_status, :shipping_status, NOW())");
     $stmt->bindValue(':invoice_name', $data['invoice_name']);
     $stmt->bindValue(':invoice_company_name', $data['invoice_company_name']);
     $stmt->bindValue(':invoice_nip', $data['invoice_nip']);

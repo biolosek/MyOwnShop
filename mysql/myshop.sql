@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 06 Kwi 2018, 16:57
+-- Czas generowania: 13 Kwi 2018, 16:53
 -- Wersja serwera: 10.1.28-MariaDB
 -- Wersja PHP: 5.6.32
 
@@ -335,6 +335,75 @@ INSERT INTO `countries` (`country_id`, `shortcut`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL,
+  `invoice_name` varchar(255) DEFAULT NULL,
+  `invoice_company_name` varchar(255) DEFAULT NULL,
+  `invoice_nip` int(60) DEFAULT NULL,
+  `invoice_adress` varchar(255) NOT NULL,
+  `invoice_postalcode` varchar(45) NOT NULL,
+  `invoice_city` varchar(255) NOT NULL,
+  `shipping_name` varchar(255) NOT NULL,
+  `shipping_adress` varchar(255) NOT NULL,
+  `shipping_postalcode` varchar(45) NOT NULL,
+  `shipping_city` varchar(255) NOT NULL,
+  `user_company` int(11) DEFAULT NULL,
+  `user_shipping` int(11) DEFAULT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `payment_status` varchar(45) DEFAULT NULL,
+  `shipping_status` varchar(45) DEFAULT NULL,
+  `date_placed` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `invoice_name`, `invoice_company_name`, `invoice_nip`, `invoice_adress`, `invoice_postalcode`, `invoice_city`, `shipping_name`, `shipping_adress`, `shipping_postalcode`, `shipping_city`, `user_company`, `user_shipping`, `account_id`, `total`, `payment_status`, `shipping_status`, `date_placed`) VALUES
+(48, 'Wiktor ?ukasiewicz', 'Try Me Now OKE?', 2147483647, 'Sandomierska 222', '27-444', '?mielow', 'Jest tak Jak jest', 'Test', '678678', 'Tak', 9, 3, 29, '2900.00', 'pending', 'pending', '2018-04-13 12:06:07'),
+(49, 'Wiktor ?ukasiewicz', 'Nowa Testowa', 6687678, 'Taki tam adresik', '2786', 'Tak', 'Jest tak Jak jest', 'Test', '678678', 'Tak', 7, 3, 29, '2900.00', 'pending', 'pending', '2018-04-13 12:06:15'),
+(50, 'Wiktor ?ukasiewicz', 'Nowa Testowa', 6687678, 'Sandomierska 222', '27-444', '?mielow', 'Testowy', 'Tak Tak', '2222', 'Tak', 7, 2, 29, '2900.00', 'pending', 'pending', '2018-04-13 12:06:18');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `orders_products`
+--
+
+CREATE TABLE `orders_products` (
+  `order_product_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(4) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `price_total` decimal(10,2) NOT NULL,
+  `order_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `orders_products`
+--
+
+INSERT INTO `orders_products` (`order_product_id`, `product_id`, `quantity`, `price`, `price_total`, `order_id`) VALUES
+(43, 4, 1, '60.00', '60.00', 48),
+(44, 3, 1, '280.00', '280.00', 48),
+(45, 2, 1, '2500.00', '2500.00', 48),
+(46, 1, 1, '60.00', '60.00', 48),
+(47, 4, 1, '60.00', '60.00', 49),
+(48, 3, 1, '280.00', '280.00', 49),
+(49, 2, 1, '2500.00', '2500.00', 49),
+(50, 1, 1, '60.00', '60.00', 49),
+(51, 4, 1, '60.00', '60.00', 50),
+(52, 3, 1, '280.00', '280.00', 50),
+(53, 2, 1, '2500.00', '2500.00', 50),
+(54, 1, 1, '60.00', '60.00', 50);
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `products`
 --
 
@@ -346,77 +415,78 @@ CREATE TABLE `products` (
   `quantity` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `category` int(11) NOT NULL,
-  `brand` int(11) NOT NULL
+  `brand` int(11) NOT NULL,
+  `main_img` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Zrzut danych tabeli `products`
 --
 
-INSERT INTO `products` (`product_id`, `name`, `price`, `description`, `quantity`, `active`, `category`, `brand`) VALUES
-(1, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(2, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(3, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(4, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(5, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(6, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(7, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(8, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(9, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(10, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(11, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(12, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
-(13, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(14, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(15, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(16, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(17, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(18, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(19, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(20, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(21, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(22, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(23, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(24, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
-(25, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(26, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(27, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(28, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(29, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(30, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(31, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(32, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(33, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(34, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(35, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(36, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
-(37, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(38, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(39, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(40, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(41, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(42, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(43, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(44, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(45, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(46, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(47, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(48, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
-(49, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(50, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(51, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(52, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(53, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(54, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(55, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(56, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(57, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2),
-(58, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(59, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(60, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1),
-(61, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1),
-(62, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2),
-(63, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2);
+INSERT INTO `products` (`product_id`, `name`, `price`, `description`, `quantity`, `active`, `category`, `brand`, `main_img`) VALUES
+(1, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(2, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(3, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(4, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(5, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(6, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(7, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(8, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(9, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(10, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(11, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(12, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1, 'http://via.placeholder.com/200x200'),
+(13, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(14, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(15, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(16, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(17, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(18, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(19, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(20, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(21, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(22, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(23, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(24, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1, 'http://via.placeholder.com/200x200'),
+(25, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(26, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(27, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(28, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(29, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(30, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(31, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(32, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(33, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(34, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(35, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(36, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1, 'http://via.placeholder.com/200x200'),
+(37, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(38, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(39, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(40, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(41, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(42, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(43, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(44, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(45, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(46, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(47, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(48, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1, 'http://via.placeholder.com/200x200'),
+(49, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(50, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(51, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(52, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(53, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(54, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(55, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(56, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(57, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200'),
+(58, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(59, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(60, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 1, 'http://via.placeholder.com/200x200'),
+(61, 'Testowy Prodult 1', '60.00', 'Jaki? tam opis wklepuj', 20, 1, 1, 1, 'http://via.placeholder.com/200x200'),
+(62, 'Testowy Produkt 2', '2500.00', 'Te? jaki? opisik testowy', 85, 1, 1, 2, 'http://via.placeholder.com/200x200'),
+(63, 'Nowy Produkcik', '280.00', 'Testeleste h?eszcze meszcze tak tak', 200, 1, 2, 2, 'http://via.placeholder.com/200x200');
 
 -- --------------------------------------------------------
 
@@ -443,6 +513,36 @@ INSERT INTO `products_categories` (`category_id`, `name`, `active`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `products_images`
+--
+
+CREATE TABLE `products_images` (
+  `product_image_id` int(11) NOT NULL,
+  `source` varchar(255) NOT NULL DEFAULT 'http://via.placeholder.com/300x300',
+  `product_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `products_images`
+--
+
+INSERT INTO `products_images` (`product_image_id`, `source`, `product_id`) VALUES
+(1, 'http://via.placeholder.com/500x300', 1),
+(2, 'http://via.placeholder.com/500x300', 2),
+(3, 'http://via.placeholder.com/500x300', 1),
+(4, 'http://via.placeholder.com/500x300', 1),
+(5, 'http://via.placeholder.com/500x300', 2),
+(6, 'http://via.placeholder.com/500x300', 1),
+(7, 'http://via.placeholder.com/500x300', 1),
+(8, 'http://via.placeholder.com/500x300', 2),
+(9, 'http://via.placeholder.com/500x300', 6),
+(10, 'http://via.placeholder.com/500x300', 5),
+(11, 'http://via.placeholder.com/500x300', 4),
+(12, 'http://via.placeholder.com/500x300', 3);
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `shipping_adresses`
 --
 
@@ -461,9 +561,9 @@ CREATE TABLE `shipping_adresses` (
 --
 
 INSERT INTO `shipping_adresses` (`shipping_adress_id`, `name`, `data`, `adress`, `postalcode`, `city`, `account_id`) VALUES
-(1, 'Nowy Testowy', 'Wiktorek', 'Tak tak 22', '676876', 'Miasto', 29),
 (2, 'Testowy', 'Nowy Testowy', 'Tak Tak', '2222', 'Tak', 29),
-(3, 'Jest tak', 'Jak jest', 'Test', '678678', 'Tak', 29);
+(3, 'Jest tak Jak jest', 'Jak jest', 'Test', '678678', 'Tak', 29),
+(4, 'Robie Kanapki Bo Lubie', 'Wiktorek', 'wfaofaoinf 222', '8888', 'Warszwka2', 29);
 
 -- --------------------------------------------------------
 
@@ -487,9 +587,7 @@ CREATE TABLE `users_companies` (
 
 INSERT INTO `users_companies` (`company_id`, `name`, `nip`, `adress`, `postalcode`, `city`, `account_id`) VALUES
 (7, 'Nowa Testowa', 6687678, 'Taki tam adresik', '2786', 'Tak', 29),
-(8, 'Nowa Testowa 2', 668767833, 'Taki tam adresik', '2786', 'Tak', 29),
-(10, 'Nowa Testowa', 678678678, 'Tak', '78979', 'Tak', 29),
-(12, 'Nowa Testowa', 2147483647, 'Tak', '78979', 'Tak', 29);
+(9, 'Try Me Now OKE?', 2147483647, 'Jaki? tam', '78798', 'Wawa2', 29);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -519,6 +617,23 @@ ALTER TABLE `countries`
   ADD UNIQUE KEY `shortcut` (`shortcut`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `user_company` (`user_company`),
+  ADD KEY `user_shipping` (`user_shipping`),
+  ADD KEY `account_id` (`account_id`);
+
+--
+-- Indexes for table `orders_products`
+--
+ALTER TABLE `orders_products`
+  ADD PRIMARY KEY (`order_product_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -532,6 +647,13 @@ ALTER TABLE `products`
 ALTER TABLE `products_categories`
   ADD PRIMARY KEY (`category_id`),
   ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indexes for table `products_images`
+--
+ALTER TABLE `products_images`
+  ADD PRIMARY KEY (`product_image_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `shipping_adresses`
@@ -571,6 +693,18 @@ ALTER TABLE `countries`
   MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;
 
 --
+-- AUTO_INCREMENT dla tabeli `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT dla tabeli `orders_products`
+--
+ALTER TABLE `orders_products`
+  MODIFY `order_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+
+--
 -- AUTO_INCREMENT dla tabeli `products`
 --
 ALTER TABLE `products`
@@ -583,16 +717,22 @@ ALTER TABLE `products_categories`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT dla tabeli `products_images`
+--
+ALTER TABLE `products_images`
+  MODIFY `product_image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT dla tabeli `shipping_adresses`
 --
 ALTER TABLE `shipping_adresses`
-  MODIFY `shipping_adress_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `shipping_adress_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT dla tabeli `users_companies`
 --
 ALTER TABLE `users_companies`
-  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -605,11 +745,32 @@ ALTER TABLE `accounts`
   ADD CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`country`) REFERENCES `countries` (`country_id`);
 
 --
+-- Ograniczenia dla tabeli `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_company`) REFERENCES `users_companies` (`company_id`),
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`user_shipping`) REFERENCES `shipping_adresses` (`shipping_adress_id`),
+  ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`);
+
+--
+-- Ograniczenia dla tabeli `orders_products`
+--
+ALTER TABLE `orders_products`
+  ADD CONSTRAINT `orders_products_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
+  ADD CONSTRAINT `orders_products_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+
+--
 -- Ograniczenia dla tabeli `products`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category`) REFERENCES `products_categories` (`category_id`),
   ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`brand`) REFERENCES `brands` (`brand_id`);
+
+--
+-- Ograniczenia dla tabeli `products_images`
+--
+ALTER TABLE `products_images`
+  ADD CONSTRAINT `products_images_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
 
 --
 -- Ograniczenia dla tabeli `shipping_adresses`

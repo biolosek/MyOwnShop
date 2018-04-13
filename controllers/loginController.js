@@ -1,5 +1,21 @@
 angular.module('myShop')
 .controller('loginController', function($rootScope, $scope, $http, $cookieStore) {
+          $rootScope.getUserOrders = function () {
+          $http({
+              method: 'post',
+              url: './php/getUserOrders.php',
+              data: {
+              account_id: $rootScope.user[0].account_id,
+              },
+              headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+          })
+          .then(function successCallback(data){
+            $rootScope.userOrders = data.data;
+            $rootScope.userOrders.date_placed =  new Date(data.data[0].date_placed);
+            $cookieStore.remove('orders');
+            $cookieStore.put('orders', $rootScope.userOrders);
+          })
+        }
           $rootScope.getShippingAdresses = function (){
         		$http({
         				method: 'post',
@@ -54,8 +70,11 @@ angular.module('myShop')
                   });
                   $cookieStore.put('authenticated', $rootScope.authenticated);
                   $cookieStore.put('user', $rootScope.user);
+                  $scope.orderData = {invoice_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, invoice_company_name: $scope.company.name, invoice_nip: $scope.company.nip, invoice_adress: $rootScope.user[0].adress, invoice_postalcode: $rootScope.user[0].postalcode, invoice_city: $rootScope.user[0].city,
+                  shipping_name: $rootScope.user[0].firstname + ' ' + $rootScope.user[0].lastname, shipping_adress:$rootScope.user[0].adress, shipping_postalcode: $rootScope.user[0].postalcode, shipping_city: $rootScope.user[0].city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: $rootScope.user[0].account_id};
                   $scope.getCompanies();
                   $scope.getShippingAdresses();
+                  $rootScope.getUserOrders();
                   return;
                 }
                 if ($scope.myResponse === 'Wrong password') {
