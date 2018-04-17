@@ -69,12 +69,29 @@ angular.module('myShop')
       }
 })
 .run(function($rootScope, $cookieStore, $http){
+
+	$rootScope.getUserOrders = function () {
+	$http({
+			method: 'post',
+			url: './php/getUserOrders.php',
+			data: {
+			account_id: $rootScope.user[0].account_id,
+			},
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	})
+	.then(function successCallback(data){
+		$rootScope.userOrders = data.data;
+		$rootScope.userOrders.date_placed =  new Date(data.data[0].date_placed);
+	})
+}
+
   $rootScope.authenticated = $cookieStore.get('authenticated');
   $rootScope.user = $cookieStore.get('user');
 	$rootScope.companies = $cookieStore.get('companies');
 	$rootScope.shippings = $cookieStore.get('shippings');
-	$rootScope.productView = $cookieStore.get('productView');
-	$rootScope.userOrders = $cookieStore.get('orders');
+		if ($rootScope.authenticated == 1) {
+			$rootScope.getUserOrders();
+		}
 
   $rootScope.getUserInfo = function() {
   $http({
@@ -138,6 +155,11 @@ angular.module('myShop')
 .filter('startFrom', function() {
 	return function(input, currentPage, perPage) {
 		return input.slice((currentPage-1) * perPage, perPage * currentPage);
+	}
+})
+.filter('startOf', function() {
+	return function(input, currentPage, perPageProfile) {
+		return input.slice((currentPage-1) * perPageProfile, perPageProfile * currentPage);
 	}
 })
 .filter("dateOnly", function(){
@@ -216,7 +238,7 @@ angular.module('myShop')
 		shipping_name: $scope.shipping.name, shipping_adress: $scope.shipping.adress, shipping_postalcode: $scope.shipping.postalcode, shipping_city: $scope.shipping.city, user_company: $scope.company.company_id, user_shipping: $scope.shipping.shipping_adress_id, account_id: $rootScope.user[0].account_id};
 		}
 	})
-		$scope.placeOrderFunction = function(form) {
+	$scope.placeOrderFunction = function(form) {
 	$http({
 		method: "post",
 		url: './php/placeOrder.php',
@@ -244,7 +266,11 @@ angular.module('myShop')
 					$scope.placeOrderResponse = data.data;
 					if ($scope.placeOrderResponse == 'Success') {
 						swal ( "Udało się!",  "Zamówienie zostało złożone.",  "success" )
+						if ($rootScope.authenticated == 1){
+						$rootScope.getUserOrders();
+					}
 						$cookieStore.remove('cartData');
+						cartData = {};
 						return;
 					}
 					else {
@@ -423,29 +449,28 @@ $http({
 		 $scope.totalItems = $scope.products.length;
 	 }, 1000 );
 
+	$scope.currentPageOrders = 1;
 	$scope.currentPageCompany = 1;
 	$scope.currentPageShipping = 1;
   $scope.currentPage = 1;
 	$scope.perPage = 8;
+	$scope.perPageProfile = 5;
   $scope.maxSize = 3;
 
 	$scope.getProductsFunction = function() {
 	$http({
 	    method: 'get',
 	    url: './php/getProducts.php',
-	})
-
-	.then(function successCallback(data) {
+	}).then(function successCallback(data) {
 	  $scope.products = data.data;
 	  })
 	}
+
 	$scope.getBrandsFunction = function() {
 	$http({
 	    method: 'get',
 	    url: './php/getBrands.php',
-	})
-
-	.then(function successCallback(data) {
+	}).then(function successCallback(data) {
 	  $scope.brands = data.data;
 	  })
 	}
@@ -454,12 +479,11 @@ $http({
 	$http({
 	    method: 'get',
 	    url: './php/getCategories.php',
-	})
-
-	.then(function successCallback(data) {
+	}).then(function successCallback(data) {
 	  $scope.categories = data.data;
 	  })
 	}
+
 	$scope.updateCartData = function() {
 		$cookieStore.remove('cartData');
 		$cookieStore.put('cartData', cartData);
@@ -472,12 +496,12 @@ $http({
 				product_id : item.product_id,
 			},
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-	})
-	.then(function successCallback(product) {
+	}).then(function successCallback(product) {
 		$scope.getProductsOnFilters();
 	  cart.addProduct(product.data[0].product_id, product.data[0].name, product.data[0].price);
 	  })
 	}
+
 	$scope.getProductsOnFilters = function() {
 		var categories = [];
 		angular.forEach($scope.categories, function(val) {
@@ -495,8 +519,7 @@ $http({
 				brands : brands,
 			},
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-	})
-	.then(function successCallback(data) {
+	}).then(function successCallback(data) {
 		$scope.filtersResponse = data.data;
 		if(angular.isArray($scope.filtersResponse)){
 			$scope.products = $scope.filtersResponse;

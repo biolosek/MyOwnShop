@@ -25,6 +25,7 @@
     <script src="controllers/addCompanyController.js"></script>
     <script src="controllers/addShippingController.js"></script>
     <script src="controllers/ordersController.js"></script>
+    <script src="controllers/forgotPasswordController.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
     <script>
     $(function () {
@@ -36,13 +37,13 @@
     $(".navbar-nav li").on("click", function(){
    $(".navbar-nav").find(".active").removeClass("active");
    $(this).parent().addClass("active");
-});
+    });
     </script>
   </head>
   <body ng-controller="appController">
     <div class="header">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#"><i class="fas fa-shopping-bag"></i> Bajali's Shop 🔥</a>
+        <a class="navbar-brand" href="#">🔥 Bajali's Shop</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -61,15 +62,15 @@
         </div>
         <div class="btn-group float-right" ng-show="!authenticated">
           <button class="btn btn-success modal-login" data-toggle="modal" href="#loginModal"><i class="fas fa-sign-in-alt"></i> Zaloguj się</button>
-          <button class="btn btn-warning modal-register" data-toggle="modal" href="#registerModal">Rejestracja</button>
-          <button class="btn btn-outline-danger">Nie pamiętasz hasła ?</button>
+          <button class="btn btn-warning modal-register" data-toggle="modal" href="#registerModal"><i class="fas fa-user-plus"></i> Rejestracja</button>
+          <button class="btn btn-outline-danger" data-toggle="modal" href="#forgotPasswordModal"><i class="fas fa-question"></i> Nie pamiętam hasła</button>
         </div>
         <div ng-show="authenticated" class="float-right">
         <div class="btn-group">
-          <a ng-href="#!profile" class="btn btn-success">Mój profil</a>
+          <a ng-href="#!profile" class="btn btn-success"><i class="fas fa-user"></i> Mój profil</a>
           <a class="btn btn-outline-danger" ng-href="#" ng-click="logout()"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a>
         </div>
-        <a ng-href="#!admin"><button class="btn btn-default" ng-show="$root.user[0].role > 0">Administracja</button></a>
+        <a ng-href="#!admin"><button class="btn btn-secondary" ng-show="$root.user[0].role > 0"><i class="fab fa-amilia"></i> Administracja</button></a>
       </div>
       </nav>
     </div>
@@ -84,7 +85,7 @@
            Pola oznaczone <span class="greenstar"><b>*</b></span> są opcjonalne.'>Legenda Formularzy</button>
          </div>
          <div class="float-right" style="color: white;">
-           &copy; Copyrights 2018 : <a href="#">SupremeDEV</a>
+           &copy; 2018. All copyrights reserved for <a href="#">SupremeDEV</a>.
          </div>
     </footer>
   </body>
@@ -92,38 +93,38 @@
   <div class="modal fade" id="registerModal">
     <div class="modal-dialog">
       <div class="modal-content" ng-controller="registerController">
-        <div class="modal-header"><h4 class="modal-title">Sign Up</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-header"><h4 class="modal-title">Zarejestruj się</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
         <div class="modal-body"><form name="registerForm">
             <div class="row">
                 <div class="col-lg-6">
-                  <label style="float: left;"><b>Firstname:</b></label>
+                  <label style="float: left;"><b>Imię :</b></label>
                   <input type="text" ng-model="registerData.firstname" class="form-control" autofocus></br>
-                  <label style="float: left;"><b>Lastname:</b></label>
+                  <label style="float: left;"><b>Nazwisko :</b></label>
                   <input type="text" ng-model="registerData.lastname" class="form-control"></br>
-                  <label style="float: left;"><b><span class="redstar">*</span> Username:</b></label>
+                  <label style="float: left;"><b><span class="redstar">*</span> Login :</b></label>
                   <input type="text" ng-model="registerData.username" class="form-control">
-                  <span ng-show="registerData.username.length < 6" class="badge badge-danger">Username must be 6-45 tekens.</span></br>
-                  <label style="float: left;"><b><span class="redstar">*</span> Password:</b></label>
+                  <span ng-show="registerData.username.length < 6" class="badge badge-danger">Login musi zawierać więcej niż 6 znaków.</span></br>
+                  <label style="float: left;"><b><span class="redstar">*</span> Hasło :</b></label>
                   <input type="password" ng-model="registerData.password" class="form-control">
-                  <span ng-show="registerData.password.length < 8" class="badge badge-danger">Password must be at least 8 tekens.</span></br>
-                  <label style="float: left;"><b><span class="redstar">*</span> Repeat Password:</b></label>
+                  <span ng-show="registerData.password.length < 8" class="badge badge-danger">Hasło musi zawierać więcej niż 8 znaków.</span></br>
+                  <label style="float: left;"><b><span class="redstar">*</span> Powtórz Hasło :</b></label>
                   <input type="password" ng-model="repeat" class="form-control">
-                  <span ng-show="repeat != registerData.password" class="badge badge-danger">Passwords aren't the same.</span></br>
+                  <span ng-show="repeat != registerData.password" class="badge badge-danger">Hasła nie są identyczne.</span></br>
                 </div>
                 <div class="col-lg-6">
                   <label style="float: left;"><b><span class="redstar">*</span> E-Mail:</b></label>
                   <input type="email" name="email" ng-model="registerData.email" ng-pattern="emailFormat" class="form-control">
-                  <span ng-show="registerForm.email.$error.pattern" class="error badge badge-danger">This e-mail is incorrect.</span></br>
-                  <label style="float: left;"><b>City:</b></label>
+                  <span ng-show="registerForm.email.$error.pattern" class="error badge badge-danger">Ten adres e-mail nie jest prawidłowy.</span></br>
+                  <label style="float: left;"><b>Miasto :</b></label>
                   <input type="text" ng-model="registerData.city" class="form-control"></br>
-                  <label style="float: left;"><b>Postal Code:</b></label>
+                  <label style="float: left;"><b>Kod Pocztowy :</b></label>
                   <input type="text" ng-model="registerData.postalcode" class="form-control"></br>
-                  <label style="float: left;"><b>Adress:</b></label>
+                  <label style="float: left;"><b>Adres :</b></label>
                   <input type="text" ng-model="registerData.adress" class="form-control"></br>
-                  <label style="float: left;"><b>Country:</b></label>
+                  <label style="float: left;"><b>Państwo :</b></label>
                   <select class="form-control" ng-model="registerData.country" required>
                     <option value='' ng-selected="null" disabled>
-                      Select Country
+                      Wybierz Państwo
                     </option>
                     <option ng-repeat="item in countries" value="{{item.country_id}}">
                       {{item.name}}
@@ -138,28 +139,54 @@
                 </div>
             </div>
         </div>
-        <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button type="submit" class="btn btn-success" ng-click="registerFunction()">Sign Up</button></div>
+        <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" class="btn btn-success" ng-click="registerFunction()">Zarejestruj się</button></div>
         </form>
         </div></div>
     </div>
 
     <div class="modal fade" id="loginModal"><div class="modal-dialog">
       <div class="modal-content" ng-controller="loginController">
-        <div class="modal-header"><h4 class="modal-title">Sign In</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-header"><h4 class="modal-title">Zaloguj Się</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
         <div class="modal-body">
       <form name="login">
               <div class="row">
                   <div class="col-lg-6">
-                    <label style="float: left;" for="inputUsername"><b>Username:</b></label>
+                    <label style="float: left;" for="inputUsername"><b>Login :</b></label>
                     <input type="text" id="inputUsername" class="form-control" required autofocus ng-model="loginData.username" autofocus/>
                   </div>
                   <div class="col-lg-6">
-                    <label style="float: left;" for="inputPassword"><b>Password:</b></label>
+                    <label style="float: left;" for="inputPassword"><b>Hasło :</b></label>
                     <input id="inputPassword" type="password" class="form-control" required ng-model="loginData.password"/>
                   </div>
               </div>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button type="submit" ng-click="loginFunction()" class="btn btn-success">Sign In</button></div></div></div>
+          <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="loginFunction()" class="btn btn-success">Zaloguj się</button></div></div></div>
           </form>
       </div>
+
+      <div class="modal fade" id="forgotPasswordModal"><div class="modal-dialog">
+        <div class="modal-content" ng-controller="forgotPasswordController">
+          <div class="modal-header"><h4 class="modal-title">Nie pamiętam hasła</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+          <div class="modal-body">
+        <form name="login">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="alert alert-info">
+                    Proszę podać <b>login</b> lub <b>e-mail</b> aby przypomnieć hasło.
+                  </div>
+                  </div>
+                    <div class="col-lg-6">
+                      <label style="float: left;" for="inputForgotUsername"><b>Login :</b></label>
+                      <input type="text" id="inputForgotUsername" class="form-control" required autofocus ng-model="forgotPasswordData.username" autofocus/>
+                    </div>
+                    <div class="col-lg-6">
+                      <label style="float: left;"><b>E-Mail :</b></label>
+                      <input name="email" type="text" class="form-control" ng-model="forgotPasswordData.email" ng-pattern="emailFormatForgot">
+                      <span ng-show="forgotPasswordData.email.$error.pattern" class="error badge badge-danger">Ten adres e-mail nie jest prawidłowy.</span>
+                    </div></br>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button><button type="submit" ng-click="doIT()" class="btn btn-success">Resetuj hasło</button></div></div></div>
+            </form>
+        </div>
 </html>

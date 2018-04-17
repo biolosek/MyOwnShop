@@ -24,7 +24,7 @@
 					<td class="text-right">{{item.price | currency}}</td>
 					<td class="text-right">{{ (item.price * item.count) | currency }}</td>
 					<td>
-						<button ng-click="remove(item.product_id)" class="btn btn-sm btn-danger float-right">Usuń</button>
+						<button ng-click="remove(item.product_id)" class="btn btn-sm btn-danger float-right"><i class="fas fa-minus-circle"></i> Usuń</button>
 					</td>
 				</tr>
 			</tbody>
@@ -40,8 +40,8 @@
 	</div>
 </div></br>
 <div ng-show="cartData.length != undefined && cartData.length != 0" class="btn-group float-right">
-	<a class="btn btn-primary" href="#!products">Kontynuuj zakupy</a>
-	<a class="btn btn-success" href="#!placeorder">Złóż zamówienie</a>
+	<a class="btn btn-primary" href="#!products"><i class="fas fa-undo-alt"></i> Kontynuuj zakupy</a>
+	<a class="btn btn-success" href="#!placeorder"><i class="fas fa-check"></i> Złóż zamówienie</a>
 </div>
 </div>
 </div>

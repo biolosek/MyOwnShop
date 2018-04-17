@@ -100,3 +100,6 @@
 .carousel svg {
   display:none !important;
 }
+.modal-span {
+  width: 100% !important;
+}

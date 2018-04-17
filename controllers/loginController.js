@@ -11,10 +11,7 @@ angular.module('myShop')
           })
           .then(function successCallback(data){
             $rootScope.userOrders = data.data;
-            $rootScope.userOrders.date_placed =  new Date(data.data[0].date_placed);
-            $cookieStore.remove('orders');
-            $cookieStore.put('orders', $rootScope.userOrders);
-          })
+            })
         }
           $rootScope.getShippingAdresses = function (){
         		$http({
@@ -64,7 +61,7 @@ angular.module('myShop')
                 if ($scope.myResponse != undefined && $scope.myResponse[0].account_id != undefined && $scope.myResponse[0].account_id != 0) {
                   $rootScope.user = $scope.myResponse;
                   $rootScope.authenticated = true;
-                  swal ( "Success!",  "You have been succesfully logged in.",  "success" )
+                  swal ( "Udało się!",  "Zostałeś zalogowany do systemu.",  "success" )
                   $(function () {
                     $('#loginModal').modal('toggle');
                   });
@@ -78,15 +75,15 @@ angular.module('myShop')
                   return;
                 }
                 if ($scope.myResponse === 'Wrong password') {
-                  swal ( "Oops",  "Password is incorrect! Try again.",  "error" )
+                  swal ( "Oops",  "Podałeś błędne hasło. Spróbuj ponownie.",  "error" )
                   return;
                 }
                 if ($scope.myResponse === 'No account') {
-                  swal ( "Oops",  "There is no account with this username! Try again.",  "error" )
+                  swal ( "Oops",  "Takie konto nie istnieje! Spróbuj ponownie.",  "error" )
                   return;
                 }
                 else {
-                  swal ( "Oops",  "Something went wrong, try again!",  "error" )
+                  swal ( "Oops",  "Coś poszło nie tak, Spróbuj ponownie.",  "error" )
                   return;
                 }
             })
