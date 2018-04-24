@@ -308,18 +308,41 @@
             <div class="modal-header"><h4 class="modal-title">Numer zamówienia: #{{orderInfo.order_id}}</h4></br><button type="button" class="close" data-dismiss="modal">&times;</button></div>
             <div class="modal-body">
                   <div class="row">
-                    <div class="col col-lg-6">
+                    <div class="col col-lg-6 order-data">
+                      <div class="insider">
                       <h5>Dane do Faktury:</h5>
-                      <span><b>Imię i Nazwisko : </b>{{orderInfo.invoice_name}}</span>
-                      <p ng-hide="orderInfo.invoice_company_name == null && orderInfo.invoice_company_name == undefined"><b>Nazwa Firmy : </b></p>
+                        <p><b>Imię i Nazwisko : </b></p>
+                        <p>{{orderInfo.invoice_name}}</p>
+                        <p ng-hide="orderInfo.invoice_company_name == null && orderInfo.invoice_company_name == undefined"><b>Nazwa Firmy : </b></p>
                         <p>{{orderInfo.invoice_company_name}}</p>
                         <p ng-show="orderInfo.invoice_nip != null && orderInfo.invoice_nip != undefined"><b>NIP : </b></p>
-                          <p>{{orderInfo.invoice_nip}}</p>
+                        <p>{{orderInfo.invoice_nip}}</p>
+                        <p><b>Adres : </b></p>
+                        <p>{{orderInfo.invoice_adress}}</p>
+                        <p><b>Kod pocztowy : </b></p>
+                        <p>{{orderInfo.invoice_postalcode}}</p>
+                        <p><b>Miasto : </b></p>
+                        <p>{{orderInfo.invoice_city}}</p>
+                      </div>
                     </div>
-                    <div class="col col-lg-6">
+                    <div class="col col-lg-6 order-data">
+                      <div class="insider">
+                      <h5>Dane do Wysyłki:</h5>
+                        <p><b>Imię i Nazwisko : </b></p>
+                        <p>{{orderInfo.shipping_name}}</p>
+                        <p><b>Adres : </b></p>
+                        <p>{{orderInfo.shipping_adress}}</p>
+                        <p><b>Kod pocztowy : </b></p>
+                        <p>{{orderInfo.shipping_postalcode}}</p>
+                        <p><b>Miasto : </b></p>
+                        <p>{{orderInfo.shipping_city}}</p>
+                      </div>
+                      <button style="margin-top: 5px;" class="btn btn-block btn-warning">Edytuj adres wysyłki</button>
                     </div>
-                    <div class="col col-lg-12">
+                    <div class="col col-lg-12" style="margin-top: 10px;">
+                      <div class="insider">
                     <table class="table">
+                      <h5>Lista produktów:</h5>
                       <thead>
                         <tr>
                           <th>Ilość</th>
@@ -340,6 +363,7 @@
                         <td colspan="4" class="text-right"><b>Kwota zamówienia :</b> {{orderInfo.total | currency}}</td>
                       </tfoot>
                     </table>
+                  </div>
                   </div>
                   </div>
               </div>

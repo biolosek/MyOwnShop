@@ -124,7 +124,8 @@ angular.module('myShop')
 })
 .config(function ($routeProvider) {
   $routeProvider.when("/admin", {
-    templateUrl: "./views/admin.html"
+    templateUrl: "./views/admin.html",
+		controller: "adminController"
   });
 
   $routeProvider.when("/profile", {
@@ -167,6 +168,24 @@ angular.module('myShop')
 				return input.split(' ')[0]; // you can filter your datetime object here as required.
 		};
 })
+.controller('adminController', function($scope, $http) {
+	$scope.allOrdersFunction = function () {
+		$http({
+			method: 'get',
+			url: './php/getAllOrders.php',
+		}).then(function successCallback(data){
+			$scope.allOrders = data.data;
+		})
+	}
+	$scope.allUsersFunction = function () {
+		$http({
+			method: 'get',
+			url: './php/getAllUsers.php',
+		}).then(function successCallback(data){
+			$scope.allUsers = data.data;
+		})
+	}
+})
 .controller('productViewController', function($scope, $routeParams, $http) {
 	$scope.myInterval = 5000;
 	$scope.noWrapSlides = false;
@@ -192,6 +211,13 @@ angular.module('myShop')
 	})
 })
 .controller('appController', function($scope, $cookieStore, $window, $rootScope, $http, cart, $timeout){
+	$scope.startEdit = function (product) {
+	$scope.editedProduct = product;
+}
+
+$scope.cancelEdit = function () {
+	$scope.editedProduct = null;
+}
 	$scope.invoice_type = 0;
 	$scope.company = {company_id : null, name: null, nip: null, adress: null, postalcode: null, city: null}
 	$scope.shipping = {shipping_adress_id : null, name: null, data: null, adress: null, postalcode: null, city: null};

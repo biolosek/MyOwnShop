@@ -1,10 +1,117 @@
-<div style="margin-top: 20px;" class="row" ng-show="!authenticated || $root.user[0].role == 0">
+<style>
+	#productTable td { max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+	#productTable td input { max-width: 200px; }
+</style>
+<div style="margin-top: 10px;" class="row" ng-show="!authenticated || $root.user[0].role == 0">
 <div class="col col-lg-12">
 <div class="alert alert-danger" role="alert"> <strong>No permission!</strong> You are not allowed to view this page.</div>
 </div>
 </div>
 <div style="margin-top: 20px;" class="row" ng-show="authenticated && $root.user[0].role > 0">
 <div class="col col-lg-12">
-<h4>Jebać</h4>
+  <h3>Panel administracyjny: </h3>
+  <ul class="nav nav-tabs">
+    <li><a class="btn btn-success btn-sm" data-toggle="tab" data-target="#products">Produkty</a></li>
+    <li><a class="btn btn-warning btn-sm" data-toggle="tab" data-target="#categories">Kategorie</a></li>
+    <li><a class="btn btn-danger btn-sm" data-toggle="tab" data-target="#brands">Marki</a></li>
+    <li><a class="btn btn-info btn-sm" data-toggle="tab" data-target="#users">Użytkownicy</a></li>
+    <li><a class="btn btn-secondary btn-sm" data-toggle="tab" data-target="#orders">Zamówienia</a></li>
+  </ul>
+
+<div class="tab-content">
+  <div id="products" class="tab-pane fade">
+    <div class="insider-admin">
+      <div class="row">
+        <div class="col col-lg-8">
+          <h3>Produkty</h3>
+        </div>
+        <div class="col col-lg-4">
+        <input type="text" class="form-control" placeholder="Szukaj..." ng-model="searchproduct" />
+      </div>
+        <div class="col col-lg-12">
+    <table id="productTable" class="table table-striped table-bordered">
+		<tr>
+			<th>ID</th><th>Nazwa</th><th>Opis</th><th>Kategoria</th><th>Marka</th><th>Cena</th><th>Akcje</th>
+		</tr>
+		<tr ng-repeat="item in products | filter:searchproduct | startFrom:currentPage:perPage" ng-hide="item.product_id == editedProduct.product_id">
+      <td>{{item.product_id}}</td>
+			<td>{{item.name}}</td>
+			<td class="description">{{item.description}}</td>
+			<td>{{categories[item.category-1].name}}</td>
+      <td>{{brands[item.brand-1].name}}</td>
+			<td>{{item.price | currency}}</td>
+		<td>
+      <div class="btn-group">
+        <button ng-click="showImages(item)" class="btn btn-sm btn-secondary">
+          Zdjęcia
+        </button>
+			<button ng-click="startEdit(item)" class="btn btn-sm btn-info">
+				Edytuj
+			</button>
+			<button ng-click="deleteProduct(item)" class="btn btn-sm btn-danger">
+				Usuń
+			</button>
+    </div>
+		</td>
+	</tr>
+	<tr ng-class="{danger: editedProduct}">
+    <td><input class="form-control" ng-model="editedProduct.product_id" required disabled/></td>
+		<td><input class="form-control" ng-model="editedProduct.name" required /></td>
+		<td><input class="form-control" ng-model="editedProduct.description" required /></td>
+		<td><input class="form-control" ng-model="editedProduct.category" required /></td>
+    <td><input class="form-control" ng-model="editedProduct.brand" required /></td>
+		<td><input class="form-control" ng-model="editedProduct.price" required /></td>
+		<td>
+			<button ng-hide="editedProduct.product_id" ng-click="createProduct(editedProduct)" class="btn btn-sm btn-success">Utwórz</button>
+      <div  ng-show="editedProduct.product_id"  class="btn-group">
+			<button ng-click="updateProduct(editedProduct)" class="btn btn-sm btn-warning">Zapisz</button>
+			<button ng-click="cancelEdit()" class="btn btn-sm btn-danger">Anuluj</button>
+    </div>
+		</td>
+	</tr>
+</table>
+    </div>
+    <div class="col col-lg-2">
+      <select class="form-control" ng-model="perPage">
+        <option disabled ng-value=8>Produktów na strone...</option>
+         <option value=4 selected>4</option>
+         <option value=8>8</option>
+         <option value=16>16</option>
+         <option value=32>32</option>
+         <option value=64>64</option>
+       </select>
+    </div>
+    <div class="col col-lg-10">
+    <ul uib-pagination boundary-links="true" onselectstart="return false;" items-per-page="perPage" total-items="(products | filter:searchproduct).length" ng-model="currentPage" class="pagination float-right" max-size="maxSize" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+    </div>
+  </div>
+</div>
+  </div>
+  <div id="categories" class="tab-pane fade">
+    <div class="insider-admin">
+    <h3>Kategorie</h3>
+    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  </div>
+  </div>
+  <div id="brands" class="tab-pane fade">
+    <div class="insider-admin">
+    <h3>Marki</h3>
+    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+  </div>
+  <div id="users" class="tab-pane fade">
+    <div class="insider-admin">
+    <h3>Użytkownicy</h3>
+    <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+  </div>
+  <div id="orders" class="tab-pane fade">
+    <div class="insider-admin">
+    <h3>Zamówienia</h3>
+    <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+  </div>
+</div>
+</div>
 </div>
 </div>

@@ -38,6 +38,10 @@
   padding: 10px;
   border: 1px black solid;
 }
+.insider-products {
+  padding: 10px 10px 0px 10px;
+  border: 1px black solid;
+}
 .well:first-child {
   margin-top: 0px !important;
 }
@@ -83,6 +87,7 @@
 .page-item.active .page-link {
     background-color: #18BC9C !important;
     color: white !important;
+    z-index: auto !important;
 }
 .page-item:first-child {
   border-left: 1px solid black !important;
@@ -102,4 +107,49 @@
 }
 .modal-span {
   width: 100% !important;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2C3E50;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #18BC9C;
+}
+.order-data p {
+  margin: 0px;
+}
+.nav-tabs {
+    border-bottom: 1px solid black !important;
+}
+.nav-tabs li {
+  padding: 10px;
+  margin-left: 10px;
+  border-width: 1px 1px 0px 1px;
+  border-color: #2C3E50;
+  color: white;
+  border-style: solid;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+.nav-tabs > li:hover {
+background-color: #2C3E50;
+color: #fff;
+}
+.insider-admin {
+  padding: 10px;
+  border-style: solid;
+  border-color: black;
+  border-width: 0px 1px 1px 1px;
 }
